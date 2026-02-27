@@ -1,21 +1,17 @@
 'use client';
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { BoxOfficeData } from '@/hooks/useOracle';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-interface Props {
-    data: BoxOfficeData[];
-}
-
-export function TradeTerminal({ data }: Props) {
-    // Aggregate mock chart data over 6 simulated time points based on current actual revenue
-    const chartData = [0, 1, 2, 3, 4, 5].map(i => {
-        return {
-            day: `Day ${i + 1}`,
-            projected: 700 + (Math.random() * 50 * i),
-            actual: 650 + (Math.random() * 80 * i),
-        };
-    });
+export function TradeTerminal() {
+    // Fixed mock chart data to avoid react-hooks/purity errors with Math.random during render
+    const chartData = [
+        { day: 'Day 1', projected: 700, actual: 650 },
+        { day: 'Day 2', projected: 720, actual: 680 },
+        { day: 'Day 3', projected: 750, actual: 760 },
+        { day: 'Day 4', projected: 800, actual: 820 },
+        { day: 'Day 5', projected: 820, actual: 810 },
+        { day: 'Day 6', projected: 850, actual: 880 },
+    ];
 
     return (
         <section className="py-12 px-4 container mx-auto mb-20">

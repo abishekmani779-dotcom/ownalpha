@@ -1,8 +1,9 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function HeroProject() {
     return (
-        <div className="relative rounded-2xl overflow-hidden shadow-sm h-full min-h-[400px] flex items-end">
+        <Link href="/project/avatar" className="block relative rounded-2xl overflow-hidden shadow-sm h-full min-h-[400px] flex flex-col justify-end group cursor-pointer transition-transform hover:scale-[1.01]">
             {/* Background Image */}
             <div
                 className="absolute inset-0 bg-cover bg-center"
@@ -68,6 +69,6 @@ export function HeroProject() {
                     <ChevronRight size={20} />
                 </button>
             </div>
-        </div>
+        </Link>
     );
 }

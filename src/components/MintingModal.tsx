@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BoxOfficeData } from '@/hooks/useOracle';
 import { X, CheckCircle, Loader2 } from 'lucide-react';

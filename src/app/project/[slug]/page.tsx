@@ -1,0 +1,332 @@
+'use client';
+
+import { Navbar } from '@/components/Navbar';
+import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck } from 'lucide-react';
+
+export default function ProjectPage({ params }: { params: { slug: string } }) {
+    const depositors = [
+        { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
+        { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
+        { rank: 'Xv4HR...X4f1', user: 'mx', badge: '', amount: '$14K', percentage: '4.8%' },
+        { rank: 'BfXFd...bXNq', user: 'tau', badge: '', amount: '$7.8K', percentage: '2.6%' },
+        { rank: 'GfBqy...Rbsv', user: 'sk', badge: '', amount: '$6.4K', percentage: '2.1%' },
+        { rank: 'XWdfd...f3f9', user: 'mx', badge: '', amount: '$5K', percentage: '1.8%' },
+        { rank: 'Rm4P9...wXw8', user: 'vk', badge: '', amount: '$2.4K', percentage: '0.8%' },
+        { rank: 'QJ1f9...B4Hj', user: 'vk', badge: '', amount: '$995', percentage: '0.3%' },
+        { rank: 'T8P4v...QGxs', user: 'sk', badge: '', amount: '$766', percentage: '0.2%' },
+        { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
+    ];
+
+    return (
+        <main className="min-h-screen flex flex-col px-4 lg:px-8 py-2 w-full max-w-[1600px] mx-auto bg-slate-50/50">
+            {/* Top Navbar */}
+            <div className="mb-6 -mx-4 lg:-mx-8 border-b-0">
+                <Navbar />
+            </div>
+
+            <div className="flex-1 w-full flex flex-col lg:flex-row gap-6">
+                {/* Left Column (Main Project Stats) */}
+                <div className="flex-1 min-w-0 flex flex-col gap-6">
+
+                    {/* Main Hero & Header */}
+                    <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-6">
+
+                        {/* Hero Image/Video */}
+                        <div className="relative w-full aspect-video md:h-[420px] rounded-2xl overflow-hidden group cursor-pointer bg-black/5">
+                            <div
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+                                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop')` }}
+                            />
+                            <div className="absolute inset-0 bg-black/20" />
+
+                            {/* Toolbar Top Left */}
+                            <div className="absolute top-4 left-4 flex flex-col gap-2">
+                                <button className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors">
+                                    <Globe className="w-5 h-5" />
+                                </button>
+                                <button className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors">
+                                    <Film className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Play Button */}
+                            <button className="absolute inset-0 m-auto w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 transition-all hover:scale-105">
+                                <Play className="w-8 h-8 text-white fill-white ml-2" />
+                            </button>
+                        </div>
+
+                        {/* Project Header Stats */}
+                        <div className="flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between">
+
+                            <div className="flex items-center gap-5">
+                                <div className="w-20 h-20 bg-black rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-slate-100">
+                                    <div className="text-white font-bold text-4xl italic tracking-tighter">E</div>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex flex-wrap items-center gap-3">
+                                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Avatar the way of water</h1>
+                                        <div className="flex items-center gap-2">
+                                            <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg whitespace-nowrap">
+                                                <BadgeCheck size={14} className="text-blue-600" />
+                                                Verified
+                                            </span>
+                                            <span className="flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-lg whitespace-nowrap">
+                                                <CheckCircle2 size={14} className="text-green-600" />
+                                                Ownership Token
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p className="text-slate-500 font-medium text-sm">Be part of the production. Back the next global phenomenon.</p>
+                                    <div className="flex -space-x-3 mt-1">
+                                        <img src="https://i.pravatar.cc/100?img=11" className="w-8 h-8 rounded-full border-2 border-white bg-slate-100" />
+                                        <img src="https://i.pravatar.cc/100?img=12" className="w-8 h-8 rounded-full border-2 border-white bg-slate-100" />
+                                        <img src="https://i.pravatar.cc/100?img=13" className="w-8 h-8 rounded-full border-2 border-white bg-slate-100" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6 md:gap-10 xl:pl-8 xl:border-l xl:border-slate-100">
+                                <div className="flex flex-col">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Ends In</span>
+                                    <span className="text-2xl font-black text-slate-900">12:56</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Depositors</span>
+                                    <span className="text-2xl font-black text-slate-900">35</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Raised</span>
+                                    <span className="text-2xl font-black text-slate-900">$7.2K</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Avg. Deposit</span>
+                                    <span className="text-2xl font-black text-slate-900">$205</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Target</span>
+                                    <span className="text-2xl font-black text-slate-900">300K</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    {/* Media Carousel Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-800">
+                            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover opacity-80 mix-blend-overlay" />
+                            <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply" />
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <h3 className="text-white/80 font-bold uppercase tracking-widest text-sm mb-4">Our Teams</h3>
+                                <div className="flex gap-4">
+                                    <img src="https://i.pravatar.cc/100?img=5" className="w-12 h-12 rounded bg-white p-0.5 object-cover" />
+                                    <img src="https://i.pravatar.cc/100?img=6" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
+                                    <img src="https://i.pravatar.cc/100?img=7" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
+                                    <img src="https://i.pravatar.cc/100?img=8" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+
+                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                        </div>
+                    </div>
+
+                    {/* Carousel Dots */}
+                    <div className="flex items-center gap-1 -mt-2">
+                        <button className="p-1 text-slate-400 hover:text-slate-800"><ChevronRight className="w-4 h-4 rotate-180" /></button>
+                        <div className="w-2 h-2 rounded-full bg-slate-800" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                        <button className="p-1 text-slate-400 hover:text-slate-800"><ChevronRight className="w-4 h-4" /></button>
+                    </div>
+
+                    {/* Project Details */}
+                    <div className="bg-slate-100/60 rounded-3xl p-8 xl:p-10 flex flex-col gap-6">
+                        <h2 className="text-2xl font-bold text-slate-900">Project Details</h2>
+                        <div className="text-slate-600 space-y-4 text-sm font-medium leading-relaxed">
+                            <h3 className="font-bold text-slate-900 uppercase tracking-wider text-xs">Avatar &quot;The Way Of Water&quot;</h3>
+                            <p>Be part of the production. Back the next global phenomenon.</p>
+
+                            <div className="space-y-1">
+                                <p>1. The Vision (Production Details):</p>
+                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
+                                    <li>Status: Pre-Production / Funding Phase.</li>
+                                    <li>Target Raise: 300,000 BNB (Alocated for high-end VFX and production).</li>
+                                    <li>Minimum Goal: 50,000 BNB.</li>
+                                    <li>The Mission: OwnAlpha connects major production houses with fans, allowing the community to fund blockbuster cinematic budgets directly.</li>
+                                </ul>
+                            </div>
+
+                            <div className="space-y-1">
+                                <p>2. The IMO (Initial Movie Offering) Dashboard:</p>
+                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
+                                    <li>Current Progress: (Progress Bar showing % of BNB raised).</li>
+                                    <li>Raise Model: 5-Day Uncapped Pro-Rata Sale.</li>
+                                    <li>Investment Security: All BNB is held in a Smart Contract Escrow. If the minimum goal isn&apos;t met, you claim a 100% refund instantly on-chain.</li>
+                                    <li>Asset Protection: Investors secure their contribution with a fraction of the movie&apos;s IP rights.</li>
+                                </ul>
+                            </div>
+
+                            <div className="space-y-1">
+                                <p>3. Investor Benefits (MNFT Tiers):</p>
+                                <p className="text-slate-500">Your Movie NFTs (MNFTs) represent &quot;Share Rights&quot; and fractional ownership:</p>
+                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
+                                    <li>Standard Tier: Pro-rata share of streaming & global box office earnings.</li>
+                                    <li>Collector Tier: Own rare pre-production footage segments (e.g., a specific 10-minute action sequence).</li>
+                                    <li>Alpha Tier: Premiere voting rights, set visitation passes, and prime VIP gold screen tags.</li>
+                                </ul>
+                            </div>
+
+                            <div className="space-y-1">
+                                <p>4. BNB Chain Ecosystem Integration:</p>
+                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
+                                    <li>Liquidity: Once the target is hit, 10% of raised BNB is paired with $ALPHA tokens to create unique trading pools for your MNFTs.</li>
+                                    <li>Automated Yield: Revenue distributions are handled via automated monthly airdrops in BNB or $ALPHA.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* How it works */}
+                    <div className="bg-white rounded-3xl p-8 xl:p-10 flex flex-col gap-8 shadow-sm border border-slate-100">
+                        <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
+                                <span className="w-3 h-3 bg-slate-400 rounded-sm" />
+                            </div>
+                            <h2 className="text-xl font-bold text-slate-900">How it works</h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="flex flex-col gap-4">
+                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">1</div>
+                                <h3 className="text-lg font-bold text-slate-900">Raise</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Fund the next Blockbuster. Movie projects launch through an uncapped pro-rata sale defined by minimal targets. Fans and investors contribute BNB to fund the production. If the IMO doesn&apos;t hit its minimum funding goal, all platforms users claim a direct refund on the platform, ensuring zero-risk guarantees on production licensing.</p>
+                            </div>
+
+                            <div className="flex flex-col gap-4">
+                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">2</div>
+                                <h3 className="text-lg font-bold text-slate-900">Trade</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Liquidity for Pop Culture. Once the target is hit, 20% of the raised funds are paired with project tokens and injected in our liquidity pool. Tokens are air-dropped to early owners within 24 hours, allowing you to trade your position immediately. Don&apos;t just watch the hype—trade it as the movie moves from production to the box office.</p>
+                            </div>
+
+                            <div className="flex flex-col gap-4">
+                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">3</div>
+                                <h3 className="text-lg font-bold text-slate-900">Play NFT (VNFTs)</h3>
+                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Own a Piece of the Premiere. The remaining funds are protocol IP are governed by decentralized decision markets. This is where you buy and hold Movie NFTs (MNFTs) that represent a stake in the films success. As a holder, you receive automated monthly airdrops and can participate in proposals to trade or manage the project&apos;s assets within the platform.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Bottom Call to Action area, 2 cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-slate-500 text-white rounded-3xl p-8 flex flex-col justify-between items-start h-48 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-slate-600 opacity-0 group-hover:opacity-10 transition-opacity" />
+                            <h3 className="text-3xl font-bold max-w-[200px] leading-tight relative relative z-10">Ready to be the next Project?</h3>
+                            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors relative z-10">
+                                Apply now
+                                <ChevronRight className="w-4 h-4 ml-2" />
+                            </button>
+                        </div>
+
+                        <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col justify-between h-48">
+                            <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 self-end mb-4">
+                                <Globe className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-slate-900">Upcoming Movies</h3>
+                            <div className="w-12 h-2 bg-slate-100 rounded-full mt-2" />
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* Right Sidebar */}
+                <div className="w-full lg:w-[400px] shrink-0 flex flex-col gap-6">
+                    <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4">
+                        {/* Tabs Toggle */}
+                        <div className="bg-slate-50 rounded-2xl p-1.5 flex shadow-inner mb-6">
+                            <button className="flex-1 bg-white text-slate-900 font-bold rounded-xl py-2.5 text-sm shadow-sm flex items-center justify-center gap-2">
+                                <span className="w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm" />
+                                Depositors
+                            </button>
+                            <button className="flex-1 text-slate-500 hover:text-slate-800 font-bold rounded-xl py-2 text-sm transition-colors">
+                                Chat
+                            </button>
+                            <button className="flex-1 text-slate-500 hover:text-slate-800 font-bold rounded-xl py-2 text-sm transition-colors">
+                                Details
+                            </button>
+                        </div>
+
+                        {/* Section Header */}
+                        <div className="px-2 mb-4">
+                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex flex-wrap gap-2">
+                                TOP 20 <span className="text-blue-500 opacity-50">·</span> <span className="text-slate-800">AVATAR (IMO)</span>
+                            </h3>
+                        </div>
+
+                        {/* Depositors List */}
+                        <div className="flex flex-col px-2 flex-1 gap-1">
+                            {depositors.map((dep, i) => (
+                                <div key={i} className="flex items-center justify-between text-sm py-2 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
+                                        <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
+                                            {dep.user}
+                                            {dep.badge && <span>{dep.badge}</span>}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-right">
+                                        <span className="font-bold text-slate-900 w-12">{dep.amount}</span>
+                                        <span className="font-bold text-slate-400 w-10 text-[11px]">{dep.percentage}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Action Button */}
+                        <div className="mt-8">
+                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm">
+                                <div className="w-4 h-4 border-2 border-white/40 rounded flex items-center justify-center relative">
+                                    <div className="absolute top-0 right-0 w-1 h-3 border-r-2 border-white translate-x-1.5 -translate-y-1 rotate-45" />
+                                </div>
+                                Log in
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Footer */}
+            <footer className="w-full py-6 flex items-center justify-between text-[11px] text-slate-500 font-semibold uppercase tracking-wider mt-6">
+                <div className="flex items-center gap-6">
+                    <span className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-yellow-400 inline-block shadow-sm" />
+                        BNB: <span className="text-slate-800">$87.23</span>
+                    </span>
+                    <span className="hover:text-slate-900 cursor-pointer transition-colors">Support</span>
+                    <span className="hover:text-slate-900 cursor-pointer transition-colors">Founders</span>
+                </div>
+                <div className="flex items-center gap-6">
+                    <span className="hover:text-slate-900 cursor-pointer transition-colors">Privacy Policy</span>
+                    <span className="hover:text-slate-900 cursor-pointer transition-colors">Terms of Service</span>
+                    <div className="flex items-center gap-3 ml-2">
+                        <button className="text-slate-400 hover:text-slate-900 transition-colors">
+                            <X size={14} strokeWidth={2.5} />
+                        </button>
+                        <button className="text-slate-400 hover:text-slate-900 transition-colors">
+                            <Send size={14} strokeWidth={2.5} className="rotate-45" />
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    );
+}

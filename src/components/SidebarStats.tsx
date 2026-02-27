@@ -4,7 +4,7 @@ import { ArrowUpDown, Wallet } from 'lucide-react';
 import { useAccount } from 'wagmi';
 
 export function SidebarStats() {
-    const { isConnected, address } = useAccount();
+    const { isConnected } = useAccount();
 
     const assets = [
         { name: 'The Godfather', symbol: 'TGF', amount: 0.45, price: 240.00, change: 1.77, up: true, img: 'https://image.tmdb.org/t/p/w200/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
