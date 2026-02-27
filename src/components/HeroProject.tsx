@@ -7,7 +7,7 @@ export function HeroProject() {
             {/* Background Image */}
             <div
                 className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('https://image.tmdb.org/t/p/original/t6HIqrNDIGGLt5ALQp11vH12aFv.jpg')` }} // Avatar full poster
+                style={{ backgroundImage: `url('https://4kwallpapers.com/images/wallpapers/avatar-the-way-of-water-avatar-2-2022-movies-sam-3840x2160-8963.jpg')` }} // Avatar full poster
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
 

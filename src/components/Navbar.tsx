@@ -4,8 +4,9 @@ import Link from 'next/link';
 
 export function Navbar() {
     return (
-        <nav className="flex items-center justify-between px-6 py-4">
-            {/* Left icons */}
+        <>
+            <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-white/95 backdrop-blur-md border-b border-slate-100">
+                {/* Left icons */}
             <div className="flex items-center gap-6">
                 <button className="text-slate-800 hover:text-black transition-colors focus:outline-none">
                     <X size={20} strokeWidth={2.5} />
@@ -147,6 +148,9 @@ export function Navbar() {
                     }}
                 </ConnectButton.Custom>
             </div>
-        </nav>
+            </nav>
+            {/* Spacer so content doesn't sit under fixed nav */}
+            <div className="h-16 shrink-0" aria-hidden />
+        </>
     );
 }

@@ -2,11 +2,11 @@ import { Play } from "lucide-react";
 
 export function MovieRow() {
     const movies = [
-        { title: "F1", funds: "$1.55M", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg" },
-        { title: "Fire Girl", funds: "$1.55M", img: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjcNsV.jpg" },
+        { title: "F1", funds: "$7.55M", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg" },
+        { title: "Fire Girl", funds: "$2.67M", img: "https://www.themoviedb.org/t/p/w1280/nbuWvW6AJy4Kd6kgfEWyU8rVWqU.jpg" },
         { title: "London Has Fallen", funds: "$1.55M", img: "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" },
-        { title: "Oopirey", funds: "$1.55M", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg" },
-        { title: "Varisu", funds: "$1.55M", img: "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjcNsV.jpg" },
+        { title: "Oopirey", funds: "$5.95M", img: "https://www.themoviedb.org/t/p/w1280/dOpnJnhABTw85CG80BhBdBH9Teh.jpg" },
+        { title: "Varisu", funds: "$3.20M", img: "https://www.themoviedb.org/t/p/w1280/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg" },
     ];
 
     return (

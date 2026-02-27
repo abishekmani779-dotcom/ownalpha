@@ -2,15 +2,32 @@
 
 import { ArrowUpDown, Wallet } from 'lucide-react';
 import { useAccount } from 'wagmi';
+import { useTokenPrice } from '../hooks/useTokenPrice';
 
 export function SidebarStats() {
     const { isConnected } = useAccount();
+    const { price, change24h, marketCap, loading, error } = useTokenPrice('ethereum', 'usd');
 
     const assets = [
         { name: 'The Godfather', symbol: 'TGF', amount: 0.45, price: 240.00, change: 1.77, up: true, img: 'https://image.tmdb.org/t/p/w200/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
         { name: 'KGF', symbol: 'KGF', amount: 0.02, price: 80.00, change: 0.4, up: true, img: 'https://image.tmdb.org/t/p/w200/uJ1wEsUKNl3XgZESrE706N9M6iV.jpg' },
         { name: 'Avatar', symbol: 'AVATAR', amount: 147.12, price: 147.05, change: 1.2, up: true, img: 'https://image.tmdb.org/t/p/w200/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg' },
     ];
+
+    const isUp = (change24h ?? 0) >= 0;
+    const displayPrice = price !== null ? `$${price.toFixed(4)}` : loading ? 'Loading...' : 'N/A';
+    const displayChange =
+        change24h !== null
+            ? `${isUp ? '+' : ''}${change24h.toFixed(2)}%`
+            : loading
+                ? '...'
+                : 'N/A';
+    const displayFdv =
+        marketCap !== null
+            ? `$${(marketCap / 1_000_000).toFixed(1)}M`
+            : loading
+                ? '—'
+                : 'N/A';
 
     return (
         <div className="flex flex-col gap-4 h-full">
@@ -26,14 +43,27 @@ export function SidebarStats() {
                     <div>
                         <h3 className="font-bold text-sm text-slate-900 leading-tight">SOWNALPHA</h3>
                         <div className="flex items-center gap-2 mt-0.5">
-                            <span className="text-sm font-semibold text-slate-800">$0.0978</span>
-                            <span className="text-[10px] font-bold bg-[#10b981]/15 text-[#10b981] px-1.5 py-0.5 rounded-full">+123%</span>
+                            <span className="text-sm font-semibold text-slate-800">
+                                {displayPrice}
+                            </span>
+                            <span
+                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
+                                    isUp ? 'bg-[#10b981]/15 text-[#10b981]' : 'bg-red-100 text-red-500'
+                                }`}
+                            >
+                                {error ? 'ERR' : displayChange}
+                            </span>
                         </div>
-                        <p className="text-[10px] text-slate-500 font-medium mt-1 uppercase">FDV <span className="text-slate-800 font-bold">$360.3K</span></p>
+                        <p className="text-[10px] text-slate-500 font-medium mt-1 uppercase">
+                            FDV{' '}
+                            <span className="text-slate-800 font-bold">
+                                {displayFdv}
+                            </span>
+                        </p>
                     </div>
                 </div>
 
-                {/* Mock Sparkline */}
+                {/* Mock Sparkline (still static for now) */}
                 <div className="w-24 h-12 ml-4">
                     <svg viewBox="0 0 100 30" className="w-full h-full stroke-[#10b981]" fill="none" strokeWidth="2">
                         <path d="M0,5 Q10,5 20,10 T40,15 T60,10 T80,20 T100,25" className="stroke-[#10b981]" />

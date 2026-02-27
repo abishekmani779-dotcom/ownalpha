@@ -1,9 +1,42 @@
 'use client';
 
+import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck } from 'lucide-react';
+import {
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    ReferenceLine,
+} from 'recharts';
+
+const GRAPH_DATA = [
+    { time: '09:00', value: 248.2 },
+    { time: '09:02', value: 249.1 },
+    { time: '09:04', value: 251.0 },
+    { time: '09:06', value: 252.4 },
+    { time: '09:08', value: 250.8 },
+    { time: '09:10', value: 253.2 },
+    { time: '09:12', value: 255.1 },
+    { time: '09:14', value: 254.3 },
+    { time: '09:15', value: 254.8 },
+    { time: '09:18', value: 256.2 },
+    { time: '09:20', value: 257.0 },
+    { time: '09:22', value: 255.5 },
+    { time: '09:24', value: 258.1 },
+    { time: '09:26', value: 259.0 },
+    { time: '09:28', value: 257.8 },
+    { time: '09:30', value: 259.5 },
+];
+
+const REFERENCE_VALUE = 254;
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {
+    const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
     const depositors = [
         { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
         { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
@@ -33,26 +66,117 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
                         {/* Hero Image/Video */}
                         <div className="relative w-full aspect-video md:h-[420px] rounded-2xl overflow-hidden group cursor-pointer bg-black/5">
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
-                                style={{ backgroundImage: `url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop')` }}
-                            />
-                            <div className="absolute inset-0 bg-black/20" />
+                            {viewMode === 'film' && (
+                                <>
+                                    <div
+                                        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+                                        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop')` }}
+                                    />
+                                    <div className="absolute inset-0 bg-black/20" />
+                                </>
+                            )}
 
-                            {/* Toolbar Top Left */}
-                            <div className="absolute top-4 left-4 flex flex-col gap-2">
-                                <button className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors">
+                            {/* Toolbar Top Left - overlaps graph */}
+                            <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                                <button
+                                    className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors"
+                                    onClick={() => setViewMode('graph')}
+                                >
                                     <Globe className="w-5 h-5" />
                                 </button>
-                                <button className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors">
+                                <button
+                                    className="bg-white/90 backdrop-blur text-slate-800 p-2 rounded-lg shadow-sm hover:bg-white transition-colors"
+                                    onClick={() => setViewMode('film')}
+                                >
                                     <Film className="w-5 h-5" />
                                 </button>
                             </div>
 
-                            {/* Play Button */}
-                            <button className="absolute inset-0 m-auto w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 transition-all hover:scale-105">
-                                <Play className="w-8 h-8 text-white fill-white ml-2" />
-                            </button>
+                            {/* Center Content: Film view vs Graph view */}
+                            {viewMode === 'film' ? (
+                                <button className="absolute inset-0 m-auto w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/30 transition-all hover:scale-105">
+                                    <Play className="w-8 h-8 text-white fill-white ml-2" />
+                                </button>
+                            ) : (
+                                <div className="absolute inset-0 rounded-2xl bg-slate-100 p-6 flex flex-col justify-between">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div>
+                                            {/* <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Box Office Trajectory</p>
+                                            <p className="text-2xl font-bold text-slate-900 mt-1">$184.2M</p> */}
+                                        </div>
+                                        <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-400/30">
+                                            +18.4% today
+                                        </span>
+                                    </div>
+                                    <div className="flex-1 min-h-0 w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <AreaChart
+                                                data={GRAPH_DATA}
+                                                margin={{ top: 12, right: 28, left: 8, bottom: 4 }}
+                                            >
+                                                <defs>
+                                                    <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="0%" stopColor="rgba(34, 197, 94, 0.25)" />
+                                                        <stop offset="100%" stopColor="rgba(34, 197, 94, 0.02)" />
+                                                    </linearGradient>
+                                                </defs>
+                                                <CartesianGrid strokeDasharray="0" stroke="#e2e8f0" vertical={false} />
+                                                <XAxis
+                                                    dataKey="time"
+                                                    axisLine={false}
+                                                    tickLine={false}
+                                                    tick={{ fontSize: 10, fill: '#64748b' }}
+                                                    dy={6}
+                                                    interval="preserveStartEnd"
+                                                />
+                                                <YAxis
+                                                    orientation="right"
+                                                    domain={['dataMin - 2', 'dataMax + 2']}
+                                                    axisLine={false}
+                                                    tickLine={false}
+                                                    tick={{ fontSize: 11, fill: '#475569' }}
+                                                    dx={8}
+                                                    tickFormatter={(v) => v.toFixed(1)}
+                                                />
+                                                <ReferenceLine
+                                                    y={REFERENCE_VALUE}
+                                                    stroke="#86efac"
+                                                    strokeDasharray="4 4"
+                                                    strokeWidth={1.5}
+                                                />
+                                                <Tooltip
+                                                    cursor={{ stroke: '#22c55e', strokeWidth: 1.5, strokeDasharray: '0' }}
+                                                    content={({ active, payload, label }) => {
+                                                        if (!active || !payload?.length) return null;
+                                                        return (
+                                                            <div className="bg-white/95 backdrop-blur rounded-lg shadow-lg border border-slate-200 px-3 py-2 text-center">
+                                                                <p className="text-[10px] font-semibold text-slate-500 uppercase">{label}</p>
+                                                                <p className="text-sm font-bold text-slate-900">{payload[0].value?.toFixed(1)}</p>
+                                                            </div>
+                                                        );
+                                                    }}
+                                                    position={{ y: 0 }}
+                                                />
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="value"
+                                                    stroke="#2563eb"
+                                                    strokeWidth={2}
+                                                    fill="url(#areaFill)"
+                                                    dot={false}
+                                                    activeDot={{
+                                                        r: 5,
+                                                        fill: '#22c55e',
+                                                        stroke: '#fff',
+                                                        strokeWidth: 2,
+                                                    }}
+                                                    isAnimationActive={false}
+                                                />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                         {/* Project Header Stats */}
@@ -248,9 +372,9 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
 
                 </div>
 
-                {/* Right Sidebar */}
-                <div className="w-full lg:w-[400px] shrink-0 flex flex-col gap-6">
-                    <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4">
+                {/* Right Sidebar - sticky so it stays visible when scrolling */}
+                <div className="w-full lg:w-[400px] shrink-0 flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start">
+                    <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4 max-h-[calc(100vh-6rem)] lg:flex lg:flex-col lg:min-h-0">
                         {/* Tabs Toggle */}
                         <div className="bg-slate-50 rounded-2xl p-1.5 flex shadow-inner mb-6">
                             <button className="flex-1 bg-white text-slate-900 font-bold rounded-xl py-2.5 text-sm shadow-sm flex items-center justify-center gap-2">
@@ -273,7 +397,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                         </div>
 
                         {/* Depositors List */}
-                        <div className="flex flex-col px-2 flex-1 gap-1">
+                        <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto">
                             {depositors.map((dep, i) => (
                                 <div key={i} className="flex items-center justify-between text-sm py-2 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
                                     <div className="flex items-center gap-3">
