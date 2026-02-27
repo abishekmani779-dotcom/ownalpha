@@ -1,5 +1,6 @@
 import { Send, Moon, Grid, Mail, X } from 'lucide-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Link from 'next/link';
 
 export function Navbar() {
     return (
@@ -16,12 +17,12 @@ export function Navbar() {
 
             {/* Center Pill */}
             <div className="flex items-center bg-white rounded-full p-1.5 shadow-sm border border-slate-100 gap-6">
-                <div className="flex items-center gap-2 pl-4 pr-2">
+                <Link href="/" className="flex items-center gap-2 pl-4 pr-2 hover:opacity-80 transition-opacity">
                     <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
                         <span className="text-white text-[10px] font-bold">O</span>
                     </div>
-                    <span className="text-sm font-bold tracking-tight text-slate-900">OwnAlpha</span>
-                </div>
+                    <span className="text-sm font-bold tracking-tight text-slate-900 cursor-pointer">OwnAlpha</span>
+                </Link>
 
                 <div className="flex items-center gap-5 text-slate-500">
                     <button className="hover:text-slate-900 transition-colors">
