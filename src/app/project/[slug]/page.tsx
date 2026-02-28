@@ -539,6 +539,41 @@ export default function ProjectPage() {
                             </div>
                         )}
 
+                        {sidebarTab === 'details' && (
+                            <div className="flex flex-col flex-1 min-h-0">
+                                <h3 className="text-[13px] font-black text-slate-800 tracking-wider mb-5 uppercase">
+                                    TOKEN INFO
+                                </h3>
+
+                                <div className="flex flex-col gap-3.5">
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Created</span>
+                                        <span className="text-slate-900 font-medium tracking-tight">Feb 19, 2026, 8:03 PM</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Developer Wallet</span>
+                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">Ero7pY...oozu</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Contract</span>
+                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">BVAWx5...AFXs</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Vault</span>
+                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">BMYemF...KhHr</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Depositors</span>
+                                        <span className="text-slate-900 font-medium tracking-tight">35</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-[15px]">
+                                        <span className="text-slate-500 font-medium tracking-tight">Top Contributor (82.6%)</span>
+                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">4N8AvD...qTBQ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Action Buttons */}
                         <div className="mt-8 flex flex-col gap-3">
                             {!isConnected ? (
