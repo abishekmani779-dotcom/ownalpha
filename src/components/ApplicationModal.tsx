@@ -59,7 +59,7 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                 Ready to propose your production?
                             </h3>
                             <p className="text-slate-300 text-[15px] leading-relaxed font-medium">
-                                You are about to enter the MetaDAO governance pipeline. Ensure your pitch deck, budget breakdown, and distribution strategy are ready for the community to audit.
+                                You are about to enter the OwnAlpha governance pipeline. Ensure your pitch deck, budget breakdown, and distribution strategy are ready for the community to audit.
                             </p>
                         </div>
 
@@ -164,7 +164,7 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                     className="relative overflow-hidden bg-blue-600 hover:bg-blue-500 text-white font-black py-5 px-10 rounded-2xl flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] shadow-[0_0_30px_rgba(37,99,235,0.4)] text-[16px] tracking-wide z-10 w-full sm:w-auto min-w-[340px] border border-blue-400/30"
                                 >
                                     <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[150%] group-hover:animate-[shimmer_1.5s_infinite]" />
-                                    <span className="text-xl">🚀</span> Submit Proposal to MetaDAO
+                                    <span className="text-xl">🚀</span> Submit Proposal to OwnAlpha
                                 </button>
                             </div>
                         </div>
