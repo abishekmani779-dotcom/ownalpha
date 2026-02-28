@@ -65,38 +65,60 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
 
                         <div className="space-y-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-bold text-slate-300 ml-1">Creative Hook</label>
-                                <input
-                                    type="text"
-                                    placeholder="What is the 1-sentence logline of your film that will make a DeFi trader want to hold the NFT?"
-                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="block text-sm font-bold text-slate-300 ml-1">Financials</label>
-                                <input
-                                    type="text"
-                                    placeholder="What is your total budget in USDC, and what is the projected ROI for the DAO treasury?"
-                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="block text-sm font-bold text-slate-300 ml-1">Proof of Talent</label>
-                                <input
-                                    type="text"
-                                    placeholder="Link your IMDb, portfolio, or previous production credits."
-                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="block text-sm font-bold text-slate-300 ml-1">Web3 Integration</label>
+                                <label className="block text-sm font-bold text-slate-300 ml-1">Title & Plot Summary</label>
                                 <textarea
                                     rows={3}
-                                    placeholder="How does this film leverage 'OwnAlpha' mechanics (e.g., exclusive scenes for holders, voting on endings)?"
-                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner resize-none min-h-[120px]"
+                                    placeholder="What is the movie name and its deep-dive plot summary?"
+                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner resize-none min-h-[100px]"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-bold text-slate-300 ml-1">Production Cost</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Total cost in USDC"
+                                        className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-bold text-slate-300 ml-1">Fundraising Duration</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Number of days"
+                                        className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-bold text-slate-300 ml-1">Pitch Deck Link</label>
+                                    <input
+                                        type="url"
+                                        placeholder="Figma / PDF link"
+                                        className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-bold text-slate-300 ml-1">Visual Proof Link</label>
+                                    <input
+                                        type="url"
+                                        placeholder="Poster / Teaser Video"
+                                        className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-bold text-slate-300 ml-1">Desired $COIN Ticker</label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g., $AVATAR"
+                                    className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                 />
                             </div>
                         </div>
