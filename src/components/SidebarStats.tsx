@@ -19,7 +19,7 @@ export function SidebarStats() {
 
     const collectibles = [
         { title: 'The Godfather', duration: '5:30 min', img: 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
-        { title: 'KGF', duration: '15:45 min', img: 'https://image.tmdb.org/t/p/w500/uJ1wEsUKNl3XgZESrE706N9M6iV.jpg' }
+        { title: 'KGF', duration: '15:45 min', img: '/images/kgf.jpg' }
     ];
 
     const isUp = (change24h ?? 0) >= 0;
