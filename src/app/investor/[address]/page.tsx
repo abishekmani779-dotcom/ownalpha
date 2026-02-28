@@ -65,7 +65,7 @@ export default function InvestorTerminalPage({ params }: { params: Promise<{ add
 
     const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
     const [tradeAmount, setTradeAmount] = useState('');
-    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
+    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('depositors');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
     const [showMintModal, setShowMintModal] = useState(false);
@@ -74,6 +74,13 @@ export default function InvestorTerminalPage({ params }: { params: Promise<{ add
         { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
         { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
         { rank: 'Xv4HR...X4f1', user: 'mx', badge: '', amount: '$14K', percentage: '4.8%' },
+        { rank: 'BfXFd...bXNq', user: 'tau', badge: '', amount: '$7.8K', percentage: '2.6%' },
+        { rank: 'GfBqy...Rbsv', user: 'sk', badge: '', amount: '$6.4K', percentage: '2.1%' },
+        { rank: 'XWdfd...f3f9', user: 'mx', badge: '', amount: '$5K', percentage: '1.8%' },
+        { rank: 'Rm4P9...wXw8', user: 'vk', badge: '', amount: '$2.4K', percentage: '0.8%' },
+        { rank: 'QJ1f9...B4Hj', user: 'vk', badge: '', amount: '$995', percentage: '0.3%' },
+        { rank: 'T8P4v...QGxs', user: 'sk', badge: '', amount: '$766', percentage: '0.2%' },
+        { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
     ];
 
     const [chatInput, setChatInput] = useState('');
@@ -323,6 +330,39 @@ export default function InvestorTerminalPage({ params }: { params: Promise<{ add
                                 Details
                             </button>
                         </div>
+
+                        {sidebarTab === 'depositors' && (
+                            <div className="flex flex-col flex-1 min-h-0">
+                                {/* Section Header */}
+                                <div className="px-2 mb-4 shrink-0">
+                                    <h3 className="text-[12px] font-black tracking-widest flex items-center">
+                                        <span className="text-blue-600">TOP 20</span>
+                                        <span className="text-slate-200 font-medium mx-2 text-lg">/</span>
+                                        <span className="text-slate-400 uppercase">NOTABLE</span>
+                                        <span className="w-[18px] h-[18px] rounded-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-400 font-bold ml-2">4</span>
+                                    </h3>
+                                </div>
+
+                                {/* Depositors List */}
+                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                    {depositors.map((dep, i) => (
+                                        <div key={i} className="flex items-center justify-between text-[15px] py-1.5 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer group">
+                                            <div className="flex items-center gap-3">
+                                                <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
+                                                <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
+                                                    {dep.user}
+                                                    {dep.badge && <span>{dep.badge}</span>}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-right">
+                                                <span className="font-bold text-slate-900 w-12">{dep.amount}</span>
+                                                <span className="font-bold text-slate-400 w-10 text-[11px]">{dep.percentage}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         {sidebarTab === 'chat' && (
                             <div className="flex flex-col flex-1 min-h-0">

@@ -34,7 +34,7 @@ export function HeroProject() {
     }, []);
 
     return (
-        <Link href="/project/avatar" className="block relative rounded-2xl overflow-hidden shadow-sm h-full min-h-[400px] flex flex-col justify-end group cursor-pointer transition-transform hover:scale-[1.01]">
+        <Link href="/investor/0xE8b3a44F23FD8aD91142006eD99627f7e837e114" className="block relative rounded-2xl overflow-hidden shadow-sm h-full min-h-[400px] flex flex-col justify-end group cursor-pointer transition-transform hover:scale-[1.01]">
             {/* Background Image */}
             <div
                 className="absolute inset-0 bg-cover bg-center"

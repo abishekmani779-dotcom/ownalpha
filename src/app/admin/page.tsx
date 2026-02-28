@@ -166,12 +166,12 @@ export default function AdminPage() {
                         >
                             Proposals
                         </button>
-                        <button
+                        {/* <button
                             onClick={() => setActiveTab('investments')}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'investments' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
                         >
                             Investments
-                        </button>
+                        </button> */}
                         <button
                             onClick={() => setActiveTab('revenue')}
                             className={`px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'revenue' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
