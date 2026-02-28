@@ -574,33 +574,55 @@ export default function ProjectPage() {
                             </div>
                         )}
 
-                        {/* Action Buttons */}
-                        <div className="mt-8 flex flex-col gap-3">
-                            {!isConnected ? (
-                                <button
-                                    onClick={openConnectModal}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm"
-                                >
-                                    <div className="w-4 h-4 border-2 border-white/40 rounded flex items-center justify-center relative">
-                                        <div className="absolute top-0 right-0 w-1 h-3 border-r-2 border-white translate-x-1.5 -translate-y-1 rotate-45" />
-                                    </div>
-                                    Connect Wallet
+                    </div>
+
+                    {/* Trade Entry Block */}
+                    <div className="bg-[#f0f0f0] rounded-[24px] p-5 flex flex-col gap-4 shadow-[inset_0_2px_4px_rgba(255,255,255,0.7),0_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+                        {/* Input Area */}
+                        <div className="flex gap-3">
+                            <input
+                                type="text"
+                                placeholder="Amount"
+                                className="flex-1 bg-white border border-slate-200/70 rounded-[18px] px-5 py-4 text-[17px] focus:outline-none focus:border-slate-300 shadow-sm text-slate-800 placeholder:text-slate-400 font-medium"
+                            />
+                            <button className="px-5 rounded-[18px] bg-slate-200/80 hover:bg-slate-300/80 text-slate-900 font-bold transition-colors shadow-sm text-[15px]">
+                                Max!
+                            </button>
+                        </div>
+
+                        {/* Submit Button */}
+                        {!isConnected ? (
+                            <button
+                                onClick={openConnectModal}
+                                className="w-full bg-[#329b36] hover:bg-[#2c882f] text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(50,155,54,0.3)] text-[17px] tracking-wide"
+                            >
+                                Connect Wallet
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => setShowMintModal(true)}
+                                className="w-full bg-[#329b36] hover:bg-[#2c882f] text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(50,155,54,0.3)] text-[17px] tracking-wide"
+                            >
+                                Buy $AVATAR
+                            </button>
+                        )}
+
+                        {/* Trade Actions / Meta */}
+                        <div className="flex items-center justify-between mt-0.5 px-0.5">
+                            <div className="flex items-center bg-slate-200/70 p-1 rounded-xl shadow-inner">
+                                <button className="bg-black text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-sm">
+                                    Buy
                                 </button>
-                            ) : (
-                                <>
-                                    <button
-                                        onClick={() => setShowMintModal(true)}
-                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm"
-                                    >
-                                        Buy Mint
-                                    </button>
-                                    <button
-                                        className="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]"
-                                    >
-                                        Browse Secondary Market
-                                    </button>
-                                </>
-                            )}
+                                <button className="text-slate-500 hover:text-slate-700 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors">
+                                    Sell
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-1.5 text-slate-500 font-medium text-sm">
+                                Balance {isConnected ? <><span className="text-slate-900 font-bold ml-0.5">2.4 BNB</span></> : <><span className="text-slate-900 font-bold ml-0.5">0 BNB</span></>}
+                                <button className="hover:rotate-180 transition-transform duration-500 text-slate-600">
+                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2v6h-6" /><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 22v-6h6" /></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -631,20 +653,22 @@ export default function ProjectPage() {
             </footer>
 
             {/* Modals */}
-            {showMintModal && (
-                <MintingModal
-                    movie={{
-                        id: 'avatar',
-                        title: 'Avatar the way of water',
-                        poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop',
-                        projectedRevenue: 184.2,
-                        actualRevenue: 7.2,
-                        progress: 18.4,
-                        multiplier: 1.5
-                    }}
-                    onClose={() => setShowMintModal(false)}
-                />
-            )}
-        </main>
+            {
+                showMintModal && (
+                    <MintingModal
+                        movie={{
+                            id: 'avatar',
+                            title: 'Avatar the way of water',
+                            poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop',
+                            projectedRevenue: 184.2,
+                            actualRevenue: 7.2,
+                            progress: 18.4,
+                            multiplier: 1.5
+                        }}
+                        onClose={() => setShowMintModal(false)}
+                    />
+                )
+            }
+        </main >
     );
 }
