@@ -5,7 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { MintingModal } from '@/components/MintingModal';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame } from 'lucide-react';
+import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star } from 'lucide-react';
 import {
     AreaChart,
     Area,
@@ -58,10 +58,10 @@ export default function ProjectPage() {
     ];
 
     const chatActivities = [
-        { id: 1, text: "EFNzqS...5fyN deposited $672.63 at Tier 0 (Instant)" },
-        { id: 2, text: "EFNzqS...5fyN deposited $673.67 at Tier 0 (Instant)" },
-        { id: 3, text: "BG4V9X...wFiE deposited $11.12 at Tier 0 (Instant)" },
-        { id: 4, text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
+        { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null, isAdmin: false },
+        { id: 2, type: "message", initials: "AS", name: "Astral Storm", date: "Jan 25", text: "hello", replyTo: "star: hi", isAdmin: false },
+        { id: 3, type: "message", initials: "D", name: "Doug", date: "Jan 26", text: "herro", replyTo: null, isAdmin: true },
+        { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
     ];
 
     return (
@@ -447,17 +447,56 @@ export default function ProjectPage() {
                                     </span>
                                 </div>
 
-                                <div className="flex flex-col flex-1 gap-3 min-h-0 overflow-y-auto mb-4">
-                                    {chatActivities.map((activity) => (
-                                        <div key={activity.id} className="bg-[#eefcf4] p-3 rounded-2xl flex items-center gap-3 w-full border border-white/40 shadow-sm">
-                                            <div className="w-8 h-8 rounded-xl bg-[#c1f0d4] flex items-center justify-center shrink-0">
-                                                <Flame className="w-4 h-4 text-[#16a34a] fill-[#16a34a]" />
+                                <div className="flex flex-col flex-1 gap-5 min-h-0 overflow-y-auto mb-4 pr-2">
+                                    {chatActivities.map((activity) => {
+                                        if (activity.type === 'deposit') {
+                                            return (
+                                                <div key={activity.id} className="bg-[#eefcf4] p-3 rounded-2xl flex items-center gap-3 w-full border border-white/40 shadow-sm">
+                                                    <div className="w-8 h-8 rounded-xl bg-[#c1f0d4] flex items-center justify-center shrink-0">
+                                                        <Flame className="w-4 h-4 text-[#16a34a] fill-[#16a34a]" />
+                                                    </div>
+                                                    <p className="text-[#16a34a] text-sm font-semibold tracking-tight leading-tight">
+                                                        {activity.text}
+                                                    </p>
+                                                </div>
+                                            );
+                                        }
+
+                                        return (
+                                            <div key={activity.id} className="flex gap-3">
+                                                <div className="w-10 h-10 rounded-2xl bg-[#e5e5e5] flex items-center justify-center shrink-0 text-slate-800 font-bold text-sm">
+                                                    {activity.initials}
+                                                </div>
+                                                <div className="flex flex-col py-0.5 flex-1">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <span className="font-semibold text-slate-900 text-[15px]">{activity.name}</span>
+                                                        {activity.isAdmin && (
+                                                            <div className="bg-[#ff5b00] text-white text-[9px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
+                                                                <Star className="w-2.5 h-2.5 fill-white" />
+                                                                ADMIN
+                                                            </div>
+                                                        )}
+                                                        <span className="text-slate-400 text-xs font-bold ml-auto">{activity.date}</span>
+                                                    </div>
+                                                    {activity.replyTo && (
+                                                        <div className="flex items-center gap-1.5 text-slate-400 text-xs font-bold mb-1">
+                                                            <CornerUpLeft className="w-3.5 h-3.5" />
+                                                            {activity.replyTo}
+                                                        </div>
+                                                    )}
+                                                    <p className="text-slate-900 text-[15px] font-medium mb-3">{activity.text}</p>
+                                                    <div className="flex gap-2">
+                                                        <button className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors shadow-sm bg-white">
+                                                            <CornerUpLeft className="w-4 h-4" />
+                                                        </button>
+                                                        <button className="h-8 px-3 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors gap-1 shadow-sm bg-white">
+                                                            <SmilePlus className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <p className="text-[#16a34a] text-sm font-semibold tracking-tight leading-tight">
-                                                {activity.text}
-                                            </p>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
 
                                 <div className="flex items-center gap-2 mt-auto">
