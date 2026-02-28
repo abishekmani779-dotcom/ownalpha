@@ -12,7 +12,7 @@ function randomInRange(min: number, max: number): number {
     return min + Math.random() * (max - min);
 }
 
-export function useTokenPrice(_coingeckoId?: string, _vsCurrency: string = 'usd'): TokenPriceState {
+export function useTokenPrice(_coingeckoId?: string): TokenPriceState {
     const [state, setState] = useState<TokenPriceState>(() => {
         const price = randomInRange(0.05, 0.15);
         const change24h = randomInRange(-15, 25);

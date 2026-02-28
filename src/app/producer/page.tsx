@@ -56,7 +56,7 @@ export default function ProducerPage() {
         args: [
           parseEther(targetRaise),
           parseEther(tokenPrice),
-          BigInt(duration) * 86400n,
+          BigInt(duration) * BigInt(86400),
           BigInt(totalSupply),
         ],
       });
@@ -69,9 +69,10 @@ export default function ProducerPage() {
       setDuration("");
       setTotalSupply("");
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Full Error:", err);
-      alert(err?.shortMessage || err?.message || "Transaction failed");
+      const error = err as { shortMessage?: string; message?: string };
+      alert(error?.shortMessage || error?.message || "Transaction failed");
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
+import { MintingModal } from '@/components/MintingModal';
+import { useAccount } from 'wagmi';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck } from 'lucide-react';
 import {
     AreaChart,
@@ -35,8 +38,11 @@ const GRAPH_DATA = [
 
 const REFERENCE_VALUE = 254;
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
+export default function ProjectPage() {
     const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
+    const { isConnected } = useAccount();
+    const { openConnectModal } = useConnectModal();
+    const [showMintModal, setShowMintModal] = useState(false);
     const depositors = [
         { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
         { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
@@ -415,14 +421,33 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                             ))}
                         </div>
 
-                        {/* Action Button */}
-                        <div className="mt-8">
-                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm">
-                                <div className="w-4 h-4 border-2 border-white/40 rounded flex items-center justify-center relative">
-                                    <div className="absolute top-0 right-0 w-1 h-3 border-r-2 border-white translate-x-1.5 -translate-y-1 rotate-45" />
-                                </div>
-                                Log in
-                            </button>
+                        {/* Action Buttons */}
+                        <div className="mt-8 flex flex-col gap-3">
+                            {!isConnected ? (
+                                <button
+                                    onClick={openConnectModal}
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm"
+                                >
+                                    <div className="w-4 h-4 border-2 border-white/40 rounded flex items-center justify-center relative">
+                                        <div className="absolute top-0 right-0 w-1 h-3 border-r-2 border-white translate-x-1.5 -translate-y-1 rotate-45" />
+                                    </div>
+                                    Connect Wallet
+                                </button>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={() => setShowMintModal(true)}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02] shadow-sm"
+                                    >
+                                        Buy Mint
+                                    </button>
+                                    <button
+                                        className="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]"
+                                    >
+                                        Browse Secondary Market
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -451,6 +476,22 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                     </div>
                 </div>
             </footer>
+
+            {/* Modals */}
+            {showMintModal && (
+                <MintingModal
+                    movie={{
+                        id: 'avatar',
+                        title: 'Avatar the way of water',
+                        poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop',
+                        projectedRevenue: 184.2,
+                        actualRevenue: 7.2,
+                        progress: 18.4,
+                        multiplier: 1.5
+                    }}
+                    onClose={() => setShowMintModal(false)}
+                />
+            )}
         </main>
     );
 }
