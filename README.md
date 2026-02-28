@@ -41,7 +41,7 @@ We are not a speculation platform. Movie tokens have one mandatory use — buyin
 
 | Resource | Link |
 |---|---|
-| 🌐 Live Demo | _[Add URL]_ |
+| 🌐 Live Demo | Local Deployment |
 | 📄 Project Details | [`docs/PROJECT.md`](docs/PROJECT.md) |
 | 🔧 Technical Docs | [`docs/TECHNICAL.md`](docs/TECHNICAL.md) |
 | 🎥 Demo & Slides | [`docs/EXTRAS.md`](docs/EXTRAS.md) |
