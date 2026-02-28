@@ -1,5 +1,8 @@
+'use client';
+
 import { Play } from "lucide-react";
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export function MovieRow() {
   const movies = [
@@ -37,15 +40,43 @@ export function MovieRow() {
       title: "Avatar",
       funds: "$4.20M",
       img: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQJfdu01GP05dCCbubLMIXZgxz4SqKIpQx92wu9zHT7pXovv-Sn",
+      slug: "avatar"
     },
   ];
 
+  interface MovieItem {
+    _id?: string;
+    title: string;
+    funds: string;
+    img: string;
+    slug?: string;
+  }
+
+  const [movieList, setMovieList] = useState<MovieItem[]>(movies);
+
+  useEffect(() => {
+    async function loadMovies() {
+      try {
+        const res = await fetch('/api/movies');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.length > 0) {
+            setMovieList(data);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch movies from DB:", err);
+      }
+    }
+    loadMovies();
+  }, []);
+
   return (
     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-      {movies.map((m, i) => (
+      {movieList.map((m, i) => (
         <Link
-          href="/project/avatar"
-          key={i}
+          href={`/project/${m.slug || 'avatar'}`}
+          key={m._id || i}
           className="block min-w-70 h-40 relative rounded-2xl overflow-hidden shadow-sm group snap-center shrink-0 cursor-pointer"
         >
           <div
