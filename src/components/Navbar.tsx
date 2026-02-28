@@ -1,8 +1,13 @@
+'use client';
+import { useState } from 'react';
 import { Send, Moon, Grid, Mail, X } from 'lucide-react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
+import ApplicationModal from './ApplicationModal';
 
 export function Navbar() {
+    const [showModal, setShowModal] = useState(false);
+
     return (
         <>
             <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-white/95 backdrop-blur-md border-b border-slate-100">
@@ -39,11 +44,12 @@ export function Navbar() {
                 </button> */}
 
                     <div className="flex items-center gap-2 pr-2">
-                        <Link href="/producer">
-                            <button className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
-                                Film Producer
-                            </button>
-                        </Link>
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors"
+                        >
+                            Film Producer - Apply Now
+                        </button>
 
 
                     </div>
@@ -159,6 +165,9 @@ export function Navbar() {
                     </ConnectButton.Custom>
                 </div>
             </nav>
+
+            {showModal && <ApplicationModal onClose={() => setShowModal(false)} />}
+
             {/* Spacer so content doesn't sit under fixed nav */}
             <div className="h-16 shrink-0" aria-hidden />
         </>
