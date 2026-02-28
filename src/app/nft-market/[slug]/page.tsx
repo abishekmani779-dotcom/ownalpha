@@ -736,6 +736,8 @@ export default function ProjectPage() {
             progress: 18.4,
             multiplier: 1.5,
           }}
+          amount="1"
+          contractAddress="0x"
           onClose={() => setShowMintModal(false)}
         />
       )}

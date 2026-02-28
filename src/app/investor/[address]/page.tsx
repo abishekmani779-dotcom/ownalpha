@@ -85,8 +85,8 @@ export default function InvestorTerminalPage({ params }: { params: Promise<{ add
 
     const [chatInput, setChatInput] = useState('');
     const [chatActivities, setChatActivities] = useState([
-        { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null, isAdmin: false },
-        { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
+        { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null as string | null, isAdmin: false },
+        { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)", initials: "", name: "", date: "", replyTo: null as string | null, isAdmin: false },
     ]);
 
     const handleSendMessage = () => {
