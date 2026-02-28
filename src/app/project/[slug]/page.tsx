@@ -430,18 +430,21 @@ export default function ProjectPage() {
                         </div>
 
                         {sidebarTab === 'depositors' && (
-                            <>
+                            <div className="flex flex-col flex-1 min-h-0">
                                 {/* Section Header */}
-                                <div className="px-2 mb-4">
-                                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex flex-wrap gap-2">
-                                        TOP 20 <span className="text-blue-500 opacity-50">·</span> <span className="text-slate-800">AVATAR (IMO)</span>
+                                <div className="px-2 mb-4 shrink-0">
+                                    <h3 className="text-[12px] font-black tracking-widest flex items-center">
+                                        <span className="text-blue-600">TOP 20</span>
+                                        <span className="text-slate-200 font-medium mx-2 text-lg">/</span>
+                                        <span className="text-slate-400 uppercase">NOTABLE</span>
+                                        <span className="w-[18px] h-[18px] rounded-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-400 font-bold ml-2">4</span>
                                     </h3>
                                 </div>
 
                                 {/* Depositors List */}
-                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto">
+                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                                     {depositors.map((dep, i) => (
-                                        <div key={i} className="flex items-center justify-between text-sm py-2 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
+                                        <div key={i} className="flex items-center justify-between text-[15px] py-1.5 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer group">
                                             <div className="flex items-center gap-3">
                                                 <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
                                                 <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
@@ -456,7 +459,7 @@ export default function ProjectPage() {
                                         </div>
                                     ))}
                                 </div>
-                            </>
+                            </div>
                         )}
 
                         {sidebarTab === 'chat' && (
@@ -468,7 +471,7 @@ export default function ProjectPage() {
                                     </span>
                                 </div>
 
-                                <div className="flex flex-col flex-1 gap-5 min-h-0 overflow-y-auto mb-4 pr-2">
+                                <div className="flex flex-col flex-1 gap-5 min-h-0 overflow-y-auto mb-4 pr-2 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                                     {chatActivities.map((activity) => {
                                         if (activity.type === 'deposit') {
                                             return (
