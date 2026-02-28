@@ -41,7 +41,7 @@ We are not a speculation platform. Movie tokens have one mandatory use — buyin
 
 | Resource | Link |
 |---|---|
-| 🌐 Live Demo | Local Deployment |
+| 🌐 Live Demo | https://ownalpha-ie1i.vercel.app/ |
 | 📄 Project Details | [`docs/PROJECT.md`](docs/PROJECT.md) |
 | 🔧 Technical Docs | [`docs/TECHNICAL.md`](docs/TECHNICAL.md) |
 | 🎥 Demo & Slides | [`docs/EXTRAS.md`](docs/EXTRAS.md) |

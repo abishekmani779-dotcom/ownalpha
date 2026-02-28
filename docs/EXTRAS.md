@@ -4,7 +4,7 @@
 
 | Resource | Link |
 |---|---|
-| 🌐 Live App (BSC Testnet) | - |
+| 🌐 Live App (BSC Testnet) | https://ownalpha-ie1i.vercel.app/ |
 | 🎥 Demo Video | https://www.loom.com/share/fa9f7ed132d24ef0b9c399f7a31c063e |
 | 📊 Pitch Deck | https://www.figma.com/deck/voth5A8cOOktt5ioMqwRxe/Untitled?node-id=1-542&viewport=-10468%2C36%2C0.4&t=rkg0Uydv6OCROEZj-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1 |
 
