@@ -1,93 +1,19 @@
-'use client';
+const fs = require('fs');
+const file = fs.readFileSync('src/app/project/[slug]/page.tsx', 'utf8');
 
-import { useState } from 'react';
-import { Navbar } from '@/components/Navbar';
-import { MintingModal } from '@/components/MintingModal';
-import ApplicationModal from '@/components/ApplicationModal';
-import { useAccount } from 'wagmi';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star, ArrowUpRight } from 'lucide-react';
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    ReferenceLine,
-} from 'recharts';
+const returnIndex = file.indexOf('    return (\n');
+const topBlock = file.slice(0, returnIndex);
 
-const GRAPH_DATA = [
-    { time: '09:00', value: 248.2 },
-    { time: '09:02', value: 249.1 },
-    { time: '09:04', value: 251.0 },
-    { time: '09:06', value: 252.4 },
-    { time: '09:08', value: 250.8 },
-    { time: '09:10', value: 253.2 },
-    { time: '09:12', value: 255.1 },
-    { time: '09:14', value: 254.3 },
-    { time: '09:15', value: 254.8 },
-    { time: '09:18', value: 256.2 },
-    { time: '09:20', value: 257.0 },
-    { time: '09:22', value: 255.5 },
-    { time: '09:24', value: 258.1 },
-    { time: '09:26', value: 259.0 },
-    { time: '09:28', value: 257.8 },
-    { time: '09:30', value: 259.5 },
-];
+const oldChatBlockStart = file.indexOf("{sidebarTab === 'chat' && (");
+const oldChatBlockEnd = file.indexOf("                        {sidebarTab === 'details' && (");
+const oldChatContent = file.slice(oldChatBlockStart, oldChatBlockEnd);
 
-const REFERENCE_VALUE = 254;
+// A slightly adjusted oldChatContent so it fits the new style
+let chatContentStr = oldChatContent.replace(/<div className="flex flex-col flex-1 min-h-0">/, `<div className="flex flex-col flex-1 min-h-0 px-2 py-2">`);
+chatContentStr = chatContentStr.replace(/px-2 mb-4 shrink-0/, `mb-3 shrink-0`);
+chatContentStr = chatContentStr.replace(/rounded-xl bg-\[#1863E1\]/g, `rounded-[12px] bg-blue-600`);
 
-export default function ProjectPage() {
-    const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
-    const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
-    const [tradeAmount, setTradeAmount] = useState('');
-    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
-    const { isConnected } = useAccount();
-    const { openConnectModal } = useConnectModal();
-    const [showMintModal, setShowMintModal] = useState(false);
-    const [showApplyModal, setShowApplyModal] = useState(false);
-    const depositors = [
-        { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
-        { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
-        { rank: 'Xv4HR...X4f1', user: 'mx', badge: '', amount: '$14K', percentage: '4.8%' },
-        { rank: 'BfXFd...bXNq', user: 'tau', badge: '', amount: '$7.8K', percentage: '2.6%' },
-        { rank: 'GfBqy...Rbsv', user: 'sk', badge: '', amount: '$6.4K', percentage: '2.1%' },
-        { rank: 'XWdfd...f3f9', user: 'mx', badge: '', amount: '$5K', percentage: '1.8%' },
-        { rank: 'Rm4P9...wXw8', user: 'vk', badge: '', amount: '$2.4K', percentage: '0.8%' },
-        { rank: 'QJ1f9...B4Hj', user: 'vk', badge: '', amount: '$995', percentage: '0.3%' },
-        { rank: 'T8P4v...QGxs', user: 'sk', badge: '', amount: '$766', percentage: '0.2%' },
-        { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
-    ];
-
-    const [chatInput, setChatInput] = useState('');
-    const [chatActivities, setChatActivities] = useState([
-        { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null, isAdmin: false },
-        { id: 2, type: "message", initials: "AS", name: "Astral Storm", date: "Jan 25", text: "hello", replyTo: "star: hi", isAdmin: false },
-        { id: 3, type: "message", initials: "D", name: "Doug", date: "Jan 26", text: "herro", replyTo: null, isAdmin: true },
-        { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
-    ]);
-
-    const handleSendMessage = () => {
-        if (!chatInput.trim() || !isConnected) return;
-
-        const newMessage = {
-            id: Date.now(),
-            type: "message",
-            initials: "ME",
-            name: "My Wallet",
-            date: "Just now",
-            text: chatInput.trim(),
-            replyTo: null,
-            isAdmin: false
-        };
-
-        setChatActivities(prev => [...prev, newMessage]);
-        setChatInput('');
-    };
-
-    return (
+const newJSX = `    return (
         <main className="min-h-screen flex flex-col px-4 lg:px-6 py-2 w-full max-w-[1500px] mx-auto bg-[#eff0f4] font-sans">
             {/* Top Navbar */}
             <div className="mb-4">
@@ -99,7 +25,7 @@ export default function ProjectPage() {
                 {/* Background Image that looks like the movie */}
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-70"
-                    style={{ backgroundImage: `url("https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2000&auto=format&fit=crop")` }}
+                    style={{ backgroundImage: \`url("https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=2000&auto=format&fit=crop")\` }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 
@@ -169,17 +95,17 @@ export default function ProjectPage() {
                          <div className="bg-white rounded-[12px] p-1 flex shadow-sm mb-3">
                              <button
                                  onClick={() => setSidebarTab('depositors')}
-                                 className={`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors flex justify-center items-center gap-1.5 ${sidebarTab === 'depositors' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                                 className={\`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors flex justify-center items-center gap-1.5 \${sidebarTab === 'depositors' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}\`}>
                                  Depositors <span className="text-[8px] bg-slate-200 px-1 py-0.5 rounded uppercase font-bold text-slate-600">35</span>
                              </button>
                              <button
                                  onClick={() => setSidebarTab('chat')}
-                                 className={`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors ${sidebarTab === 'chat' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                                 className={\`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors \${sidebarTab === 'chat' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}\`}>
                                  Chat
                              </button>
                              <button
                                  onClick={() => setSidebarTab('details')}
-                                 className={`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors ${sidebarTab === 'details' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                                 className={\`flex-1 font-semibold rounded-[10px] py-1.5 text-[11px] transition-colors \${sidebarTab === 'details' ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}\`}>
                                  Details
                              </button>
                          </div>
@@ -217,89 +143,7 @@ export default function ProjectPage() {
                              </div>
                          )}
 
-{sidebarTab === 'chat' && (
-                            <div className="flex flex-col flex-1 min-h-0 px-2 py-2">
-                                <div className="mb-3 shrink-0">
-                                    <span className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] text-[10px] tracking-wider font-extrabold px-3 py-1 rounded-full">
-                                        <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a]"></span>
-                                        2 ONLINE
-                                    </span>
-                                </div>
-
-                                <div className="flex flex-col flex-1 gap-5 min-h-0 overflow-y-auto mb-4 pr-2 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                                    {chatActivities.map((activity) => {
-                                        if (activity.type === 'deposit') {
-                                            return (
-                                                <div key={activity.id} className="bg-[#eefcf4] p-3 rounded-2xl flex items-center gap-3 w-full border border-white/40 shadow-sm">
-                                                    <div className="w-8 h-8 rounded-xl bg-[#c1f0d4] flex items-center justify-center shrink-0">
-                                                        <Flame className="w-4 h-4 text-[#16a34a] fill-[#16a34a]" />
-                                                    </div>
-                                                    <p className="text-[#16a34a] text-sm font-semibold tracking-tight leading-tight">
-                                                        {activity.text}
-                                                    </p>
-                                                </div>
-                                            );
-                                        }
-
-                                        return (
-                                            <div key={activity.id} className="flex gap-3">
-                                                <div className="w-10 h-10 rounded-2xl bg-[#e5e5e5] flex items-center justify-center shrink-0 text-slate-800 font-bold text-sm">
-                                                    {activity.initials}
-                                                </div>
-                                                <div className="flex flex-col py-0.5 flex-1">
-                                                    <div className="flex items-center gap-2 mb-1">
-                                                        <span className="font-semibold text-slate-900 text-[15px]">{activity.name}</span>
-                                                        {activity.isAdmin && (
-                                                            <div className="bg-[#ff5b00] text-white text-[9px] font-black px-1.5 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
-                                                                <Star className="w-2.5 h-2.5 fill-white" />
-                                                                ADMIN
-                                                            </div>
-                                                        )}
-                                                        <span className="text-slate-400 text-xs font-bold ml-auto">{activity.date}</span>
-                                                    </div>
-                                                    {activity.replyTo && (
-                                                        <div className="flex items-center gap-1.5 text-slate-400 text-xs font-bold mb-1">
-                                                            <CornerUpLeft className="w-3.5 h-3.5" />
-                                                            {activity.replyTo}
-                                                        </div>
-                                                    )}
-                                                    <p className="text-slate-900 text-[15px] font-medium mb-3">{activity.text}</p>
-                                                    <div className="flex gap-2">
-                                                        <button className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors shadow-sm bg-white">
-                                                            <CornerUpLeft className="w-4 h-4" />
-                                                        </button>
-                                                        <button className="h-8 px-3 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors gap-1 shadow-sm bg-white">
-                                                            <SmilePlus className="w-4 h-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
-                                <div className="flex items-center gap-2 mt-auto">
-                                    <input
-                                        type="text"
-                                        disabled={!isConnected}
-                                        value={chatInput}
-                                        onChange={(e) => setChatInput(e.target.value)}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') handleSendMessage();
-                                        }}
-                                        placeholder={isConnected ? "Type a message..." : "Log in to chat"}
-                                        className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-slate-300 shadow-sm text-slate-900 placeholder:text-slate-400 font-medium"
-                                    />
-                                    <button
-                                        onClick={handleSendMessage}
-                                        className="w-12 h-12 rounded-[12px] bg-blue-600 flex items-center justify-center text-white shrink-0 hover:bg-[#1557c2] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <Send size={18} className="rotate-45 -translate-x-0.5 translate-y-0.5" />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-
+${chatContentStr}
 
                          {sidebarTab === 'details' && (
                              <div className="flex flex-col flex-1 min-h-0 text-xs p-4 text-slate-600">
@@ -332,10 +176,10 @@ export default function ProjectPage() {
                                  if (!isConnected) openConnectModal?.();
                                  else {
                                       if (tradeMode === 'buy') setShowMintModal(true);
-                                      else alert(`Selling ${tradeAmount} $AVATAR...`);
+                                      else alert(\`Selling \${tradeAmount} $AVATAR...\`);
                                  }
                              }}
-                             className={`w-full text-white font-bold py-2.5 rounded-[10px] flex items-center justify-center transition-transform shadow-sm text-[12px] tracking-wide ${!isConnected ? 'bg-blue-600 hover:bg-blue-700' : (tradeMode === 'buy' ? 'bg-[#2ea838] hover:bg-[#278d2f]' : 'bg-[#18181b] hover:bg-black')}`}
+                             className={\`w-full text-white font-bold py-2.5 rounded-[10px] flex items-center justify-center transition-transform shadow-sm text-[12px] tracking-wide \${!isConnected ? 'bg-blue-600 hover:bg-blue-700' : (tradeMode === 'buy' ? 'bg-[#2ea838] hover:bg-[#278d2f]' : 'bg-[#18181b] hover:bg-black')}\`}
                          >
                              {!isConnected ? 'Connect Wallet' : (tradeMode === 'buy' ? 'Buy $AVATAR' : 'Sell $AVATAR')}
                          </button>
@@ -344,12 +188,12 @@ export default function ProjectPage() {
                              <div className="flex items-center bg-black rounded-lg p-0.5 shadow-sm">
                                  <button
                                      onClick={() => setTradeMode('buy')}
-                                     className={`px-2 py-0.5 rounded-[6px] text-[9px] font-bold transition-colors ${tradeMode === 'buy' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}>
+                                     className={\`px-2 py-0.5 rounded-[6px] text-[9px] font-bold transition-colors \${tradeMode === 'buy' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}\`}>
                                      Buy
                                  </button>
                                  <button
                                      onClick={() => setTradeMode('sell')}
-                                     className={`px-2 py-0.5 rounded-[6px] text-[9px] font-bold transition-colors ${tradeMode === 'sell' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}`}>
+                                     className={\`px-2 py-0.5 rounded-[6px] text-[9px] font-bold transition-colors \${tradeMode === 'sell' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white'}\`}>
                                      Sell
                                  </button>
                              </div>
@@ -457,3 +301,6 @@ export default function ProjectPage() {
         </main >
     );
 }
+`;
+
+fs.writeFileSync('src/app/project/[slug]/page.tsx', topBlock + newJSX);
