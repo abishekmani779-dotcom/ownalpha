@@ -1,25 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BoxOfficeData } from '@/hooks/useOracle';
 import { X, CheckCircle, Loader2 } from 'lucide-react';
+import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
+import movieFundingAbi from '@/abi/MovieFunding.json';
+import { parseEther } from 'viem';
 
 interface Props {
     movie: BoxOfficeData;
+    amount: string;
+    contractAddress?: string;
     onClose: () => void;
 }
 
-export function MintingModal({ movie, onClose }: Props) {
-    const [step, setStep] = useState(0); // 0: Review, 1: Approving, 2: Signing, 3: Success
+export function MintingModal({ movie, amount, contractAddress, onClose }: Props) {
+    const [step, setStep] = useState(0); // 0: Review, 1: Approving/Signing, 2: Wait Confirm, 3: Success
+    const { address } = useAccount();
 
+    const { data: hash, writeContract, isPending } = useWriteContract();
+
+    const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+        hash,
+    });
+
+    // Handle the smart contract transaction
     const handleMint = async () => {
-        setStep(1);
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate approve
-        setStep(2);
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate sign
-        setStep(3);
+        if (!contractAddress || !amount) {
+            alert('Missing contract address or amount.');
+            return;
+        }
+
+        try {
+            setStep(1);
+            writeContract({
+                address: contractAddress as `0x${string}`,
+                abi: movieFundingAbi.abi,
+                functionName: 'invest',
+                value: parseEther(amount),
+            });
+        } catch (error) {
+            console.error('Minting failed:', error);
+            setStep(0);
+        }
     };
+
+    // Transition to step 2 when transaction is sent (pending confirmation)
+    useEffect(() => {
+        if (hash && isConfirming) {
+            setStep(2);
+        }
+    }, [hash, isConfirming]);
+
+    // Handle successful confirmation
+    useEffect(() => {
+        if (isConfirmed) {
+            setStep(3);
+
+            // Save to database via webhook
+            fetch('/api/investments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    investorAddress: address || 'Unknown',
+                    movieSlug: movie.id,
+                    amount: amount,
+                    tokens: 'Pending', // Calculation handled by contract or indexer
+                })
+            }).catch(console.error);
+        }
+    }, [isConfirmed, address, amount, movie.id]);
 
     return (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
@@ -47,7 +98,7 @@ export function MintingModal({ movie, onClose }: Props) {
                             <div className="space-y-4">
                                 <div className="flex justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                                     <span className="text-slate-400">Position Size</span>
-                                    <span className="text-white font-semibold">100 USDC</span>
+                                    <span className="text-white font-semibold">{amount} BNB</span>
                                 </div>
                                 <div className="flex justify-between p-4 rounded-xl bg-white/5 border border-white/10">
                                     <span className="text-slate-400">Target Multiplier</span>
@@ -61,9 +112,10 @@ export function MintingModal({ movie, onClose }: Props) {
 
                             <button
                                 onClick={handleMint}
-                                className="w-full py-4 rounded-xl bg-[#00F3FF] text-[#0B0B0B] font-bold text-lg hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all"
+                                disabled={isPending || !contractAddress}
+                                className="w-full py-4 rounded-xl bg-[#00F3FF] text-[#0B0B0B] font-bold text-lg hover:bg-white hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                Confirm Transaction
+                                {contractAddress ? 'Confirm Transaction' : 'Contract not deployed'}
                             </button>
                         </>
                     )}
@@ -73,9 +125,11 @@ export function MintingModal({ movie, onClose }: Props) {
                             <Loader2 className="w-12 h-12 text-[#00F3FF] animate-spin" />
                             <div className="text-center space-y-2">
                                 <h3 className="text-xl font-bold text-white">
-                                    {step === 1 ? 'Approving USDC...' : 'Signing Transaction...'}
+                                    {step === 1 ? 'Please Confirm in Wallet...' : 'Awaiting Confirmation...'}
                                 </h3>
-                                <p className="text-slate-400 text-sm">Please confirm in your wallet</p>
+                                <p className="text-slate-400 text-sm">
+                                    {step === 1 ? 'Approving transaction in your wallet provider' : 'Transaction sent. Waiting for network confirmation.'}
+                                </p>
                             </div>
                         </div>
                     )}

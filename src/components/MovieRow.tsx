@@ -93,7 +93,7 @@ export function MovieRow() {
           </div>
 
           <button className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors">
-            Play trailer <Play className="w-3 h-3 fill-current" />
+            Buy NFT <Play className="w-3 h-3 fill-current" />
           </button>
         </Link>
       ))}

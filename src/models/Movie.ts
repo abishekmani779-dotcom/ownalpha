@@ -5,6 +5,7 @@ export interface IMovie {
     funds: string; // e.g. "$7.55M"
     img: string; // URL
     slug: string; // used for routing to /project/[slug]
+    contractAddress?: string; // Optional: Smart contract address mapping
 }
 
 const MovieSchema = new mongoose.Schema<IMovie>(
@@ -13,6 +14,7 @@ const MovieSchema = new mongoose.Schema<IMovie>(
         funds: { type: String, required: true },
         img: { type: String, required: true },
         slug: { type: String, required: true, unique: true },
+        contractAddress: { type: String, required: false },
     },
     { timestamps: true }
 );

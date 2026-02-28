@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, use } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { MintingModal } from '@/components/MintingModal';
 import ApplicationModal from '@/components/ApplicationModal';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContracts } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { formatEther } from 'viem';
+import movieFundingAbi from '@/abi/MovieFunding.json';
 import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star, ArrowUpRight } from 'lucide-react';
 import {
     AreaChart,
@@ -39,28 +41,28 @@ const GRAPH_DATA = [
 
 const REFERENCE_VALUE = 254;
 
-export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = use(params);
+export default function InvestorTerminalPage({ params }: { params: Promise<{ address: string }> }) {
+    const { address: fundingAddress } = use(params);
 
     const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
-    const [movieData, setMovieData] = useState<any>(null);
 
-    useEffect(() => {
-        async function fetchMovie() {
-            try {
-                const res = await fetch(`/api/movies/${slug}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setMovieData(data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch movie:", err);
-            }
-        }
-        if (slug) {
-            fetchMovie();
-        }
-    }, [slug]);
+    // Fetch smart contract details directly from the chain
+    const contractConfig = {
+        address: fundingAddress as `0x${string}`,
+        abi: movieFundingAbi.abi,
+    };
+
+    const { data: contractData, isLoading: contractLoading } = useReadContracts({
+        contracts: [
+            { ...contractConfig, functionName: 'targetRaise' },
+            { ...contractConfig, functionName: 'tokenPrice' },
+            { ...contractConfig, functionName: 'deadline' },
+        ]
+    });
+
+    const targetRaiseStr = contractData?.[0]?.result ? formatEther(contractData[0].result as bigint) : "0";
+    const tokenPriceStr = contractData?.[1]?.result ? formatEther(contractData[1].result as bigint) : "0";
+
     const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
     const [tradeAmount, setTradeAmount] = useState('');
     const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
@@ -72,20 +74,11 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
         { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
         { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
         { rank: 'Xv4HR...X4f1', user: 'mx', badge: '', amount: '$14K', percentage: '4.8%' },
-        { rank: 'BfXFd...bXNq', user: 'tau', badge: '', amount: '$7.8K', percentage: '2.6%' },
-        { rank: 'GfBqy...Rbsv', user: 'sk', badge: '', amount: '$6.4K', percentage: '2.1%' },
-        { rank: 'XWdfd...f3f9', user: 'mx', badge: '', amount: '$5K', percentage: '1.8%' },
-        { rank: 'Rm4P9...wXw8', user: 'vk', badge: '', amount: '$2.4K', percentage: '0.8%' },
-        { rank: 'QJ1f9...B4Hj', user: 'vk', badge: '', amount: '$995', percentage: '0.3%' },
-        { rank: 'T8P4v...QGxs', user: 'sk', badge: '', amount: '$766', percentage: '0.2%' },
-        { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
     ];
 
     const [chatInput, setChatInput] = useState('');
     const [chatActivities, setChatActivities] = useState([
         { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null, isAdmin: false },
-        { id: 2, type: "message", initials: "AS", name: "Astral Storm", date: "Jan 25", text: "hello", replyTo: "star: hi", isAdmin: false },
-        { id: 3, type: "message", initials: "D", name: "Doug", date: "Jan 26", text: "herro", replyTo: null, isAdmin: true },
         { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
     ]);
 
@@ -157,10 +150,6 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                             ) : (
                                 <div className="absolute inset-0 rounded-2xl bg-slate-100 p-6 flex flex-col justify-between">
                                     <div className="flex items-center justify-between mb-2">
-                                        <div>
-                                            {/* <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Box Office Trajectory</p>
-                                            <p className="text-2xl font-bold text-slate-900 mt-1">$184.2M</p> */}
-                                        </div>
                                         <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-400/30">
                                             +18.4% today
                                         </span>
@@ -236,6 +225,37 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                             )}
                         </div>
 
+                        <div className="flex gap-4 border-b border-slate-200">
+                            <button className="px-6 py-4 font-bold text-slate-900 border-b-2 border-slate-900">
+                                Terminal
+                            </button>
+                            <button className="px-6 py-4 font-bold text-slate-400 hover:text-slate-600 transition-colors">
+                                Contract Info
+                            </button>
+                        </div>
+
+                        <div className="flex-1 p-6 lg:p-10 flex flex-col justify-center max-w-2xl">
+                            <span className="inline-block text-blue-600 font-bold tracking-wider uppercase text-sm mb-3">Live Contract</span>
+                            <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-4 break-all">
+                                Funding Terminal <span className="text-slate-400">#{fundingAddress?.slice(0, 6)}</span>
+                            </h1>
+                            <p className="text-lg text-slate-600 font-medium mb-10 leading-relaxed break-all">
+                                You are interacting directly with the <span className="font-semibold text-slate-900">{fundingAddress}</span> smart contract deployed on-chain. Read the raw contract state and invest instantly.
+                            </p>
+
+                            <div className="flex items-center gap-10">
+                                <div>
+                                    <div className="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider">Target Raise</div>
+                                    <div className="text-2xl font-bold text-slate-900">{contractLoading ? '...' : targetRaiseStr} BNB</div>
+                                </div>
+                                <div className="w-px h-12 bg-slate-200 hidden md:block" />
+                                <div>
+                                    <div className="text-slate-500 text-sm font-semibold mb-1 uppercase tracking-wider">Token Price</div>
+                                    <div className="text-2xl font-bold text-slate-900">{contractLoading ? '...' : tokenPriceStr} BNB</div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Project Header Stats */}
                         <div className="flex flex-col xl:flex-row gap-6 items-start xl:items-center justify-between">
 
@@ -245,7 +265,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <div className="flex flex-wrap items-center gap-3">
-                                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Avatar the way of water</h1>
+                                        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">On-Chain Alpha</h1>
                                         <div className="flex items-center gap-2">
                                             <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg whitespace-nowrap">
                                                 <BadgeCheck size={14} className="text-blue-600" />
@@ -275,159 +295,8 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Depositors</span>
                                     <span className="text-2xl font-black text-slate-900">35</span>
                                 </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Raised</span>
-                                    <span className="text-2xl font-black text-slate-900">$7.2K</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Avg. Deposit</span>
-                                    <span className="text-2xl font-black text-slate-900">$205</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Target</span>
-                                    <span className="text-2xl font-black text-slate-900">300K</span>
-                                </div>
                             </div>
 
-                        </div>
-                    </div>
-
-                    {/* Media Carousel Row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-800">
-                            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover opacity-80 mix-blend-overlay" />
-                            <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply" />
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <h3 className="text-white/80 font-bold uppercase tracking-widest text-sm mb-4">Our Teams</h3>
-                                <div className="flex gap-4">
-                                    <img src="https://i.pravatar.cc/100?img=5" className="w-12 h-12 rounded bg-white p-0.5 object-cover" />
-                                    <img src="https://i.pravatar.cc/100?img=6" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
-                                    <img src="https://i.pravatar.cc/100?img=7" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
-                                    <img src="https://i.pravatar.cc/100?img=8" className="w-12 h-12 rounded bg-cyan-400 p-0.5 object-cover" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-100">
-                            <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                        </div>
-
-                        <div className="relative h-40 rounded-2xl overflow-hidden bg-slate-100">
-                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800&auto=format&fit=crop" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-                        </div>
-                    </div>
-
-                    {/* Carousel Dots */}
-                    <div className="flex items-center gap-1 -mt-2">
-                        <button className="p-1 text-slate-400 hover:text-slate-800"><ChevronRight className="w-4 h-4 rotate-180" /></button>
-                        <div className="w-2 h-2 rounded-full bg-slate-800" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-                        <button className="p-1 text-slate-400 hover:text-slate-800"><ChevronRight className="w-4 h-4" /></button>
-                    </div>
-
-                    {/* Project Details */}
-                    <div className="bg-slate-100/60 rounded-3xl p-8 xl:p-10 flex flex-col gap-6">
-                        <h2 className="text-2xl font-bold text-slate-900">Project Details</h2>
-                        <div className="text-slate-600 space-y-4 text-sm font-medium leading-relaxed">
-                            <h3 className="font-bold text-slate-900 uppercase tracking-wider text-xs">Avatar &quot;The Way Of Water&quot;</h3>
-                            <p>Be part of the production. Back the next global phenomenon.</p>
-
-                            <div className="space-y-1">
-                                <p>1. The Vision (Production Details):</p>
-                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
-                                    <li>Status: Pre-Production / Funding Phase.</li>
-                                    <li>Target Raise: 300,000 BNB (Alocated for high-end VFX and production).</li>
-                                    <li>Minimum Goal: 50,000 BNB.</li>
-                                    <li>The Mission: OwnAlpha connects major production houses with fans, allowing the community to fund blockbuster cinematic budgets directly.</li>
-                                </ul>
-                            </div>
-
-                            <div className="space-y-1">
-                                <p>2. The IMO (Initial Movie Offering) Dashboard:</p>
-                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
-                                    <li>Current Progress: (Progress Bar showing % of BNB raised).</li>
-                                    <li>Raise Model: 5-Day Uncapped Pro-Rata Sale.</li>
-                                    <li>Investment Security: All BNB is held in a Smart Contract Escrow. If the minimum goal isn&apos;t met, you claim a 100% refund instantly on-chain.</li>
-                                    <li>Asset Protection: Investors secure their contribution with a fraction of the movie&apos;s IP rights.</li>
-                                </ul>
-                            </div>
-
-                            <div className="space-y-1">
-                                <p>3. Investor Benefits (MNFT Tiers):</p>
-                                <p className="text-slate-500">Your Movie NFTs (MNFTs) represent &quot;Share Rights&quot; and fractional ownership:</p>
-                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
-                                    <li>Standard Tier: Pro-rata share of streaming & global box office earnings.</li>
-                                    <li>Collector Tier: Own rare pre-production footage segments (e.g., a specific 10-minute action sequence).</li>
-                                    <li>Alpha Tier: Premiere voting rights, set visitation passes, and prime VIP gold screen tags.</li>
-                                </ul>
-                            </div>
-
-                            <div className="space-y-1">
-                                <p>4. BNB Chain Ecosystem Integration:</p>
-                                <ul className="list-disc pl-5 space-y-1 text-slate-500">
-                                    <li>Liquidity: Once the target is hit, 10% of raised BNB is paired with $ALPHA tokens to create unique trading pools for your MNFTs.</li>
-                                    <li>Automated Yield: Revenue distributions are handled via automated monthly airdrops in BNB or $ALPHA.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* How it works */}
-                    <div className="bg-white rounded-3xl p-8 xl:p-10 flex flex-col gap-8 shadow-sm border border-slate-100">
-                        <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                            <div className="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-                                <span className="w-3 h-3 bg-slate-400 rounded-sm" />
-                            </div>
-                            <h2 className="text-xl font-bold text-slate-900">How it works</h2>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="flex flex-col gap-4">
-                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">1</div>
-                                <h3 className="text-lg font-bold text-slate-900">Raise</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Fund the next Blockbuster. Movie projects launch through an uncapped pro-rata sale defined by minimal targets. Fans and investors contribute BNB to fund the production. If the IMO doesn&apos;t hit its minimum funding goal, all platforms users claim a direct refund on the platform, ensuring zero-risk guarantees on production licensing.</p>
-                            </div>
-
-                            <div className="flex flex-col gap-4">
-                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">2</div>
-                                <h3 className="text-lg font-bold text-slate-900">Trade</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Liquidity for Pop Culture. Once the target is hit, 20% of the raised funds are paired with project tokens and injected in our liquidity pool. Tokens are air-dropped to early owners within 24 hours, allowing you to trade your position immediately. Don&apos;t just watch the hype—trade it as the movie moves from production to the box office.</p>
-                            </div>
-
-                            <div className="flex flex-col gap-4">
-                                <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-sm">3</div>
-                                <h3 className="text-lg font-bold text-slate-900">Play NFT (VNFTs)</h3>
-                                <p className="text-slate-500 text-sm leading-relaxed font-medium">Own a Piece of the Premiere. The remaining funds are protocol IP are governed by decentralized decision markets. This is where you buy and hold Movie NFTs (MNFTs) that represent a stake in the films success. As a holder, you receive automated monthly airdrops and can participate in proposals to trade or manage the project&apos;s assets within the platform.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Call to Action area, 2 cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-[#808080] text-white rounded-[20px] p-7 flex flex-col justify-between items-start h-[200px] relative overflow-hidden shadow-sm">
-                            <h3 className="text-[26px] font-medium leading-snug relative z-10 tracking-tight">
-                                Ready to be the<br />next Project?
-                            </h3>
-                            <button
-                                onClick={() => setShowApplyModal(true)}
-                                className="bg-[#1b65f6] hover:bg-[#1655cc] text-white font-medium py-3 px-5 rounded-[12px] flex items-center gap-2 transition-colors relative z-10 text-[14px]"
-                            >
-                                Apply now
-                                <ArrowUpRight className="w-5 h-5 ml-0.5" strokeWidth={2.5} />
-                            </button>
-                        </div>
-
-                        <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col justify-between h-48">
-                            <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center text-slate-800 self-end mb-4">
-                                <Globe className="w-6 h-6" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-slate-900">Upcoming Movies</h3>
-                            <div className="w-12 h-2 bg-slate-100 rounded-full mt-2" />
                         </div>
                     </div>
 
@@ -454,39 +323,6 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                 Details
                             </button>
                         </div>
-
-                        {sidebarTab === 'depositors' && (
-                            <div className="flex flex-col flex-1 min-h-0">
-                                {/* Section Header */}
-                                <div className="px-2 mb-4 shrink-0">
-                                    <h3 className="text-[12px] font-black tracking-widest flex items-center">
-                                        <span className="text-blue-600">TOP 20</span>
-                                        <span className="text-slate-200 font-medium mx-2 text-lg">/</span>
-                                        <span className="text-slate-400 uppercase">NOTABLE</span>
-                                        <span className="w-[18px] h-[18px] rounded-full bg-slate-100 flex items-center justify-center text-[10px] text-slate-400 font-bold ml-2">4</span>
-                                    </h3>
-                                </div>
-
-                                {/* Depositors List */}
-                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                                    {depositors.map((dep, i) => (
-                                        <div key={i} className="flex items-center justify-between text-[15px] py-1.5 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer group">
-                                            <div className="flex items-center gap-3">
-                                                <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
-                                                <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
-                                                    {dep.user}
-                                                    {dep.badge && <span>{dep.badge}</span>}
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-4 text-right">
-                                                <span className="font-bold text-slate-900 w-12">{dep.amount}</span>
-                                                <span className="font-bold text-slate-400 w-10 text-[11px]">{dep.percentage}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
 
                         {sidebarTab === 'chat' && (
                             <div className="flex flex-col flex-1 min-h-0">
@@ -578,16 +414,10 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
 
                                 <div className="flex flex-col flex-1 gap-3.5 min-h-0 overflow-y-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                                     <div className="flex justify-between items-center text-[15px]">
-                                        <span className="text-slate-500 font-medium tracking-tight">Created</span>
-                                        <span className="text-slate-900 font-medium tracking-tight">Feb 19, 2026, 8:03 PM</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-[15px]">
-                                        <span className="text-slate-500 font-medium tracking-tight">Developer Wallet</span>
-                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">Ero7pY...oozu</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-[15px]">
                                         <span className="text-slate-500 font-medium tracking-tight">Contract</span>
-                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">BVAWx5...AFXs</span>
+                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">
+                                            {fundingAddress?.slice(0, 6)}...{fundingAddress?.slice(-4)}
+                                        </span>
                                     </div>
                                     <div className="flex justify-between items-center text-[15px]">
                                         <span className="text-slate-500 font-medium tracking-tight">Vault</span>
@@ -597,10 +427,6 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                         <span className="text-slate-500 font-medium tracking-tight">Depositors</span>
                                         <span className="text-slate-900 font-medium tracking-tight">35</span>
                                     </div>
-                                    <div className="flex justify-between items-center text-[15px]">
-                                        <span className="text-slate-500 font-medium tracking-tight">Top Contributor (82.6%)</span>
-                                        <span className="text-slate-900 font-medium tracking-tight border-b-2 border-dotted border-slate-400">4N8AvD...qTBQ</span>
-                                    </div>
                                 </div>
                             </div>
                         )}
@@ -609,6 +435,29 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
 
                     {/* Trade Entry Block */}
                     <div className="bg-[#f0f0f0] rounded-[24px] p-5 flex flex-col shrink-0 gap-4 shadow-[inset_0_2px_4px_rgba(255,255,255,0.7),0_4px_12px_rgba(0,0,0,0.05)] border border-white/50">
+                        {/* Header Details */}
+                        <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=150&auto=format&fit=crop"
+                                    alt="Terminal"
+                                    className="w-12 h-12 rounded-xl object-cover shadow-sm bg-slate-100"
+                                />
+                                <div>
+                                    <h2 className="text-xl font-bold text-slate-900 leading-tight">Contract: {fundingAddress?.slice(0, 6)}...{fundingAddress?.slice(-4)}</h2>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="bg-[#131823] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wide">
+                                            ACTIVE
+                                        </span>
+                                        <span className="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                                            <BadgeCheck size={12} className="text-blue-500" />
+                                            Verified Funding
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Input Area */}
                         <div className="flex gap-3">
                             <input
@@ -640,13 +489,13 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                     if (tradeMode === 'buy') {
                                         setShowMintModal(true);
                                     } else {
-                                        alert(`Selling ${tradeAmount} $AVATAR...`);
+                                        alert(`Selling ${tradeAmount}... (Claim Revenue Action)`);
                                         setTradeAmount('');
                                     }
                                 }}
                                 className={`w-full text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] text-[17px] tracking-wide ${tradeMode === 'buy' ? 'bg-[#329b36] hover:bg-[#2c882f]' : 'bg-[#e11d48] hover:bg-[#be123c]'}`}
                             >
-                                {tradeMode === 'buy' ? 'Buy $AVATAR' : 'Sell $AVATAR'}
+                                {tradeMode === 'buy' ? 'Fund Contract' : 'Claim Revenue'}
                             </button>
                         )}
 
@@ -707,16 +556,16 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                 showMintModal && (
                     <MintingModal
                         movie={{
-                            id: movieData?.slug || 'avatar',
-                            title: movieData?.title || 'Avatar the way of water',
-                            poster: movieData?.img || 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop',
-                            projectedRevenue: 184.2,
-                            actualRevenue: parseFloat(movieData?.funds?.replace(/[^0-9.-]+/g, "")) || 7.2,
-                            progress: 18.4,
-                            multiplier: 1.5
+                            id: fundingAddress,
+                            title: `Terminal ${fundingAddress?.slice(0, 6)}`,
+                            poster: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop',
+                            projectedRevenue: parseFloat(targetRaiseStr) || 0,
+                            actualRevenue: 0,
+                            progress: 0,
+                            multiplier: 1.0
                         }}
                         amount={tradeAmount}
-                        contractAddress={movieData?.contractAddress}
+                        contractAddress={fundingAddress}
                         onClose={() => setShowMintModal(false)}
                     />
                 )

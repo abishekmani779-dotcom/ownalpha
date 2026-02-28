@@ -90,7 +90,7 @@ export function HypeHub() {
                         </div>
 
                         {selectedMovie === movie.id && (
-                            <MintingModal movie={movie} onClose={() => setSelectedMovie(null)} />
+                            <MintingModal movie={movie} amount="100" contractAddress="" onClose={() => setSelectedMovie(null)} />
                         )}
                     </motion.div>
                 ))}
