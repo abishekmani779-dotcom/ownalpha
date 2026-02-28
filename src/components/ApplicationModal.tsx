@@ -9,6 +9,39 @@ interface ApplicationModalProps {
 export default function ApplicationModal({ onClose }: ApplicationModalProps) {
     const [isHovering, setIsHovering] = useState(false);
 
+    // Form State
+    const [title, setTitle] = useState('');
+    const [cost, setCost] = useState('');
+    const [duration, setDuration] = useState('');
+    const [pitchDeck, setPitchDeck] = useState('');
+    const [visualProof, setVisualProof] = useState('');
+    const [ticker, setTicker] = useState('');
+
+    const handleSubmit = () => {
+        if (!title || !cost || !duration || !ticker) {
+            alert("Please fill required fields (Title, Cost, Duration, Ticker).");
+            return;
+        }
+
+        const proposal = {
+            id: Date.now().toString(),
+            title,
+            cost,
+            duration,
+            pitchDeck,
+            visualProof,
+            ticker,
+            status: 'pending',
+            date: new Date().toLocaleDateString()
+        };
+
+        const existing = JSON.parse(localStorage.getItem('ownalpha_proposals') || '[]');
+        localStorage.setItem('ownalpha_proposals', JSON.stringify([proposal, ...existing]));
+
+        alert("Proposal submitted successfully! It has been routed to the Admin/Producer panel.");
+        onClose();
+    };
+
     // Pre-calculate random properties in useEffect to maintain render purity
     const [particles, setParticles] = React.useState<{ id: number, icon: string, initX: number, animY: number, animX: number, rotate: number, scale: number, duration: number, delay: number }[]>([]);
 
@@ -69,6 +102,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                 <textarea
                                     rows={3}
                                     placeholder="What is the movie name and its deep-dive plot summary?"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
                                     className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner resize-none min-h-[100px]"
                                 />
                             </div>
@@ -79,6 +114,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                     <input
                                         type="number"
                                         placeholder="Total cost in USDC"
+                                        value={cost}
+                                        onChange={(e) => setCost(e.target.value)}
                                         className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                     />
                                 </div>
@@ -88,6 +125,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                     <input
                                         type="number"
                                         placeholder="Number of days"
+                                        value={duration}
+                                        onChange={(e) => setDuration(e.target.value)}
                                         className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                     />
                                 </div>
@@ -99,6 +138,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                     <input
                                         type="url"
                                         placeholder="Figma / PDF link"
+                                        value={pitchDeck}
+                                        onChange={(e) => setPitchDeck(e.target.value)}
                                         className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                     />
                                 </div>
@@ -108,6 +149,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                     <input
                                         type="url"
                                         placeholder="Poster / Teaser Video"
+                                        value={visualProof}
+                                        onChange={(e) => setVisualProof(e.target.value)}
                                         className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                     />
                                 </div>
@@ -118,6 +161,8 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                 <input
                                     type="text"
                                     placeholder="e.g., $AVATAR"
+                                    value={ticker}
+                                    onChange={(e) => setTicker(e.target.value)}
                                     className="w-full bg-[#131823] border border-[#2b3344] rounded-2xl px-5 py-4 text-[15px] focus:outline-none focus:border-blue-500 focus:bg-[#1a2133] transition-colors text-white placeholder:text-slate-600 font-medium shadow-inner"
                                 />
                             </div>
@@ -160,7 +205,7 @@ export default function ApplicationModal({ onClose }: ApplicationModalProps) {
                                 </motion.div>
 
                                 <button
-                                    onClick={onClose}
+                                    onClick={handleSubmit}
                                     className="relative overflow-hidden bg-blue-600 hover:bg-blue-500 text-white font-black py-5 px-10 rounded-2xl flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] shadow-[0_0_30px_rgba(37,99,235,0.4)] text-[16px] tracking-wide z-10 w-full sm:w-auto min-w-[340px] border border-blue-400/30"
                                 >
                                     <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[150%] group-hover:animate-[shimmer_1.5s_infinite]" />
