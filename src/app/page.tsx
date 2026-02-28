@@ -20,8 +20,11 @@ export default function Home() {
         {/* Search and Filter */}
         <SearchFilter />
 
-        {/* Top Carousel Row */}
-        <MovieRow />
+        <div className="flex flex-col gap-3">
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight ml-1">Released Movies</h2>
+          {/* Top Carousel Row */}
+          <MovieRow />
+        </div>
 
         {/* Main Split Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 flex-1 min-h-0">
