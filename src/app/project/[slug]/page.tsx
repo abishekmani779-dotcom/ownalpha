@@ -40,6 +40,7 @@ const REFERENCE_VALUE = 254;
 
 export default function ProjectPage() {
     const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
+    const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
     const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
@@ -601,19 +602,23 @@ export default function ProjectPage() {
                         ) : (
                             <button
                                 onClick={() => setShowMintModal(true)}
-                                className="w-full bg-[#329b36] hover:bg-[#2c882f] text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(50,155,54,0.3)] text-[17px] tracking-wide"
+                                className={`w-full text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] text-[17px] tracking-wide ${tradeMode === 'buy' ? 'bg-[#329b36] hover:bg-[#2c882f]' : 'bg-[#e11d48] hover:bg-[#be123c]'}`}
                             >
-                                Buy $AVATAR
+                                {tradeMode === 'buy' ? 'Buy $AVATAR' : 'Sell $AVATAR'}
                             </button>
                         )}
 
                         {/* Trade Actions / Meta */}
                         <div className="flex items-center justify-between mt-0.5 px-0.5">
                             <div className="flex items-center bg-slate-200/70 p-1 rounded-xl shadow-inner">
-                                <button className="bg-black text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-sm">
+                                <button
+                                    onClick={() => setTradeMode('buy')}
+                                    className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${tradeMode === 'buy' ? 'bg-black text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
                                     Buy
                                 </button>
-                                <button className="text-slate-500 hover:text-slate-700 px-4 py-1.5 rounded-lg text-sm font-bold transition-colors">
+                                <button
+                                    onClick={() => setTradeMode('sell')}
+                                    className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-colors ${tradeMode === 'sell' ? 'bg-black text-white shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}>
                                     Sell
                                 </button>
                             </div>
