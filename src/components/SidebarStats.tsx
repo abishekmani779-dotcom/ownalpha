@@ -1,17 +1,25 @@
 'use client';
 
+import { useState } from 'react';
+
 import { ArrowUpDown, Wallet } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { useTokenPrice } from '../hooks/useTokenPrice';
 
 export function SidebarStats() {
     const { isConnected } = useAccount();
-    const { price, change24h, marketCap, loading, error } = useTokenPrice('ethereum', 'usd');
+    const { price, change24h, marketCap, loading, error } = useTokenPrice('ethereum');
+    const [activeTab, setActiveTab] = useState<'Asset' | 'Collectibles'>('Asset');
 
     const assets = [
         { name: 'The Godfather', symbol: 'TGF', amount: 0.45, price: 240.00, change: 1.77, up: true, img: 'https://image.tmdb.org/t/p/w200/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
         { name: 'KGF', symbol: 'KGF', amount: 0.02, price: 80.00, change: 0.4, up: true, img: 'https://image.tmdb.org/t/p/w200/uJ1wEsUKNl3XgZESrE706N9M6iV.jpg' },
         { name: 'Avatar', symbol: 'AVATAR', amount: 147.12, price: 147.05, change: 1.2, up: true, img: 'https://image.tmdb.org/t/p/w200/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg' },
+    ];
+
+    const collectibles = [
+        { title: 'The Godfather', duration: '5:30 min', img: 'https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg' },
+        { title: 'KGF', duration: '15:45 min', img: 'https://image.tmdb.org/t/p/w500/uJ1wEsUKNl3XgZESrE706N9M6iV.jpg' }
     ];
 
     const isUp = (change24h ?? 0) >= 0;
@@ -47,9 +55,8 @@ export function SidebarStats() {
                                 {displayPrice}
                             </span>
                             <span
-                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${
-                                    isUp ? 'bg-[#10b981]/15 text-[#10b981]' : 'bg-red-100 text-red-500'
-                                }`}
+                                className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${isUp ? 'bg-[#10b981]/15 text-[#10b981]' : 'bg-red-100 text-red-500'
+                                    }`}
                             >
                                 {error ? 'ERR' : displayChange}
                             </span>
@@ -76,9 +83,17 @@ export function SidebarStats() {
             <div className="bg-white rounded-2xl p-5 shadow-sm flex-1 flex flex-col">
                 {/* Tabs */}
                 <div className="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
-                    <div className="flex gap-4">
-                        <button className="text-sm font-bold text-slate-900 border-b-2 border-slate-900 pb-2 -mb-[9px]">Asset</button>
-                        <button className="text-sm font-medium text-slate-400 pb-2 hover:text-slate-600">Collectibles</button>
+                    <div className="flex gap-4 relative">
+                        <button
+                            onClick={() => setActiveTab('Asset')}
+                            className={`text-sm font-bold pb-2 -mb-[9px] transition-colors relative z-10 ${activeTab === 'Asset' ? 'text-slate-900 border-b-2 border-slate-900' : 'text-slate-400 hover:text-slate-600'}`}>
+                            Asset
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('Collectibles')}
+                            className={`text-sm font-bold pb-2 -mb-[9px] transition-colors relative z-10 ${activeTab === 'Collectibles' ? 'text-slate-900 border-b-2 border-slate-900' : 'text-slate-400 hover:text-slate-600'}`}>
+                            Collectibles
+                        </button>
                     </div>
                     <button className="text-slate-400 hover:text-slate-600"><ArrowUpDown size={14} /></button>
                 </div>
@@ -94,27 +109,46 @@ export function SidebarStats() {
                             <p className="text-slate-500 text-xs mt-1 text-center max-w-[200px]">Connect your wallet to view your active movie assets and collectibles.</p>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-5">
-                            {assets.map((asset, i) => (
-                                <div key={i} className="flex justify-between items-center group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                                            <img src={asset.img} alt={asset.name} className="w-full h-full object-cover" />
+                        <>
+                            {activeTab === 'Asset' && (
+                                <div className="flex flex-col gap-5">
+                                    {assets.map((asset, i) => (
+                                        <div key={i} className="flex justify-between items-center group cursor-pointer">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden shrink-0">
+                                                    <img src={asset.img} alt={asset.name} className="w-full h-full object-cover" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{asset.name}</p>
+                                                    <p className="text-[11px] font-semibold text-slate-500 uppercase">{asset.amount} {asset.symbol}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-sm font-bold text-slate-900">${asset.price.toFixed(2)}</p>
+                                                <p className={`text-[11px] font-bold ${asset.up ? 'text-[#10b981]' : 'text-red-500'}`}>
+                                                    {asset.up ? '+' : '-'}{asset.change}%
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{asset.name}</p>
-                                            <p className="text-[11px] font-semibold text-slate-500 uppercase">{asset.amount} {asset.symbol}</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-sm font-bold text-slate-900">${asset.price.toFixed(2)}</p>
-                                        <p className={`text-[11px] font-bold ${asset.up ? 'text-[#10b981]' : 'text-red-500'}`}>
-                                            {asset.up ? '+' : '-'}{asset.change}%
-                                        </p>
-                                    </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+                            )}
+
+                            {activeTab === 'Collectibles' && (
+                                <div className="grid grid-cols-2 gap-3">
+                                    {collectibles.map((c, i) => (
+                                        <div key={i} className="relative rounded-2xl overflow-hidden aspect-[3/4] group cursor-pointer shadow-sm">
+                                            <img src={c.img} alt={c.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                                            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between gap-1 bg-white/10 backdrop-blur-md rounded-xl px-2.5 py-1.5 border border-white/20">
+                                                <span className="text-white text-[10px] font-bold truncate">{c.title}</span>
+                                                <span className="text-white/90 text-[10px] font-bold whitespace-nowrap">{c.duration}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
