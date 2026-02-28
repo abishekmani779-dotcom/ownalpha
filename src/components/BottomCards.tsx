@@ -1,6 +1,11 @@
+'use client';
+import { useState } from 'react';
 import { Calendar, ArrowUpRight, BookOpen, Sparkles } from 'lucide-react';
+import ApplicationModal from './ApplicationModal';
 
 export function BottomCards() {
+    const [showModal, setShowModal] = useState(false);
+
     return (
         <div className="grid grid-cols-12 gap-4 h-24 pb-6">
 
@@ -23,7 +28,10 @@ export function BottomCards() {
                 <span className="text-white text-base font-bold tracking-tight pb-1 relative z-10">
                     Ready to raise?
                 </span>
-                <button className="text-white text-sm font-semibold tracking-tight pb-1 hover:underline relative z-10">
+                <button
+                    onClick={() => setShowModal(true)}
+                    className="text-white text-sm font-semibold tracking-tight pb-1 hover:underline relative z-10"
+                >
                     Apply here
                 </button>
             </div>
@@ -45,6 +53,7 @@ export function BottomCards() {
                 </div>
             </div>
 
+            {showModal && <ApplicationModal onClose={() => setShowModal(false)} />}
         </div>
     );
 }
