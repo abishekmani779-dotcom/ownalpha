@@ -543,7 +543,7 @@ export default function ProjectPage() {
                                     />
                                     <button
                                         onClick={handleSendMessage}
-                                        className="w-12 h-12 rounded-xl bg-[#ffa88f] flex items-center justify-center text-white shrink-0 hover:bg-[#ff967a] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                        className="w-12 h-12 rounded-xl bg-[#1863E1] flex items-center justify-center text-white shrink-0 hover:bg-[#1557c2] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                         <Send size={18} className="rotate-45 -translate-x-0.5 translate-y-0.5" />
                                     </button>
                                 </div>
