@@ -407,9 +407,9 @@ export default function ProjectPage() {
 
                 </div>
 
-                {/* Right Sidebar - sticky so it stays visible when scrolling */}
-                <div className="w-full lg:w-[400px] shrink-0 flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start">
-                    <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4 max-h-[calc(100vh-6rem)] lg:flex lg:flex-col lg:min-h-0">
+                {/* Right Sidebar */}
+                <div className="w-full lg:w-[400px] shrink-0 flex flex-col gap-6">
+                    <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4">
                         {/* Tabs Toggle */}
                         <div className="bg-slate-50 rounded-2xl p-1.5 flex shadow-inner mb-6">
                             <button
@@ -430,9 +430,9 @@ export default function ProjectPage() {
                         </div>
 
                         {sidebarTab === 'depositors' && (
-                            <div className="flex flex-col flex-1 min-h-0">
+                            <div className="flex flex-col">
                                 {/* Section Header */}
-                                <div className="px-2 mb-4 shrink-0">
+                                <div className="px-2 mb-4">
                                     <h3 className="text-[12px] font-black tracking-widest flex items-center">
                                         <span className="text-blue-600">TOP 20</span>
                                         <span className="text-slate-200 font-medium mx-2 text-lg">/</span>
@@ -442,7 +442,7 @@ export default function ProjectPage() {
                                 </div>
 
                                 {/* Depositors List */}
-                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto pb-4 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                <div className="flex flex-col px-2 gap-1 pb-4">
                                     {depositors.map((dep, i) => (
                                         <div key={i} className="flex items-center justify-between text-[15px] py-1.5 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer group">
                                             <div className="flex items-center gap-3">
@@ -463,7 +463,7 @@ export default function ProjectPage() {
                         )}
 
                         {sidebarTab === 'chat' && (
-                            <div className="flex flex-col flex-1 min-h-0">
+                            <div className="flex flex-col">
                                 <div className="px-2 mb-4">
                                     <span className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] text-[10px] tracking-wider font-extrabold px-3 py-1 rounded-full">
                                         <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a]"></span>
@@ -471,7 +471,7 @@ export default function ProjectPage() {
                                     </span>
                                 </div>
 
-                                <div className="flex flex-col flex-1 gap-5 min-h-0 overflow-y-auto mb-4 pr-2 scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                                <div className="flex flex-col gap-5 mb-4 pr-2">
                                     {chatActivities.map((activity) => {
                                         if (activity.type === 'deposit') {
                                             return (
@@ -545,7 +545,7 @@ export default function ProjectPage() {
                         )}
 
                         {sidebarTab === 'details' && (
-                            <div className="flex flex-col flex-1 min-h-0">
+                            <div className="flex flex-col">
                                 <h3 className="text-[13px] font-black text-slate-800 tracking-wider mb-5 uppercase">
                                     TOKEN INFO
                                 </h3>
