@@ -41,6 +41,7 @@ const REFERENCE_VALUE = 254;
 export default function ProjectPage() {
     const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
     const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
+    const [tradeAmount, setTradeAmount] = useState('');
     const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
@@ -584,9 +585,13 @@ export default function ProjectPage() {
                             <input
                                 type="text"
                                 placeholder="Amount"
+                                value={tradeAmount}
+                                onChange={(e) => setTradeAmount(e.target.value)}
                                 className="flex-1 bg-white border border-slate-200/70 rounded-[18px] px-5 py-4 text-[17px] focus:outline-none focus:border-slate-300 shadow-sm text-slate-800 placeholder:text-slate-400 font-medium"
                             />
-                            <button className="px-5 rounded-[18px] bg-slate-200/80 hover:bg-slate-300/80 text-slate-900 font-bold transition-colors shadow-sm text-[15px]">
+                            <button
+                                onClick={() => setTradeAmount(tradeMode === 'sell' ? '12.5' : '100')}
+                                className="px-5 rounded-[18px] bg-slate-200/80 hover:bg-slate-300/80 text-slate-900 font-bold transition-colors shadow-sm text-[15px]">
                                 Max!
                             </button>
                         </div>
@@ -601,7 +606,15 @@ export default function ProjectPage() {
                             </button>
                         ) : (
                             <button
-                                onClick={() => setShowMintModal(true)}
+                                onClick={() => {
+                                    if (!tradeAmount) return;
+                                    if (tradeMode === 'buy') {
+                                        setShowMintModal(true);
+                                    } else {
+                                        alert(`Selling ${tradeAmount} $AVATAR...`);
+                                        setTradeAmount('');
+                                    }
+                                }}
                                 className={`w-full text-white font-bold py-4 rounded-[18px] flex items-center justify-center gap-2 transition-transform shadow-[0_4px_14px_rgba(0,0,0,0.15)] text-[17px] tracking-wide ${tradeMode === 'buy' ? 'bg-[#329b36] hover:bg-[#2c882f]' : 'bg-[#e11d48] hover:bg-[#be123c]'}`}
                             >
                                 {tradeMode === 'buy' ? 'Buy $AVATAR' : 'Sell $AVATAR'}
