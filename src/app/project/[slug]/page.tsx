@@ -57,12 +57,31 @@ export default function ProjectPage() {
         { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
     ];
 
-    const chatActivities = [
+    const [chatInput, setChatInput] = useState('');
+    const [chatActivities, setChatActivities] = useState([
         { id: 1, type: "message", initials: "DT", name: "Doug test", date: "Jan 24", text: "whats the issue ser?", replyTo: null, isAdmin: false },
         { id: 2, type: "message", initials: "AS", name: "Astral Storm", date: "Jan 25", text: "hello", replyTo: "star: hi", isAdmin: false },
         { id: 3, type: "message", initials: "D", name: "Doug", date: "Jan 26", text: "herro", replyTo: null, isAdmin: true },
         { id: 4, type: "deposit", text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
-    ];
+    ]);
+
+    const handleSendMessage = () => {
+        if (!chatInput.trim() || !isConnected) return;
+
+        const newMessage = {
+            id: Date.now(),
+            type: "message",
+            initials: "ME",
+            name: "My Wallet",
+            date: "Just now",
+            text: chatInput.trim(),
+            replyTo: null,
+            isAdmin: false
+        };
+
+        setChatActivities(prev => [...prev, newMessage]);
+        setChatInput('');
+    };
 
     return (
         <main className="min-h-screen flex flex-col px-4 lg:px-8 py-2 w-full max-w-[1600px] mx-auto bg-slate-50/50">
@@ -503,10 +522,17 @@ export default function ProjectPage() {
                                     <input
                                         type="text"
                                         disabled={!isConnected}
+                                        value={chatInput}
+                                        onChange={(e) => setChatInput(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') handleSendMessage();
+                                        }}
                                         placeholder={isConnected ? "Type a message..." : "Log in to chat"}
                                         className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-slate-300 shadow-sm text-slate-900 placeholder:text-slate-400 font-medium"
                                     />
-                                    <button className="w-12 h-12 rounded-xl bg-[#ffa88f] flex items-center justify-center text-white shrink-0 hover:bg-[#ff967a] transition-colors shadow-sm">
+                                    <button
+                                        onClick={handleSendMessage}
+                                        className="w-12 h-12 rounded-xl bg-[#ffa88f] flex items-center justify-center text-white shrink-0 hover:bg-[#ff967a] transition-colors shadow-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                         <Send size={18} className="rotate-45 -translate-x-0.5 translate-y-0.5" />
                                     </button>
                                 </div>
