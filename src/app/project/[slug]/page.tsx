@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { MintingModal } from '@/components/MintingModal';
+import ApplicationModal from '@/components/ApplicationModal';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star } from 'lucide-react';
@@ -46,6 +47,7 @@ export default function ProjectPage() {
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
     const [showMintModal, setShowMintModal] = useState(false);
+    const [showApplyModal, setShowApplyModal] = useState(false);
     const depositors = [
         { rank: '4N9s4C...dTfQ', user: 'tau', badge: '👑', amount: '$154K', percentage: '51.4%' },
         { rank: 'HoXFd...xNkW', user: 'rhos', badge: '', amount: '$24K', percentage: '8.0%' },
@@ -390,7 +392,10 @@ export default function ProjectPage() {
                         <div className="bg-slate-500 text-white rounded-3xl p-8 flex flex-col justify-between items-start h-48 relative overflow-hidden group">
                             <div className="absolute inset-0 bg-slate-600 opacity-0 group-hover:opacity-10 transition-opacity" />
                             <h3 className="text-3xl font-bold max-w-[200px] leading-tight relative relative z-10">Ready to be the next Project?</h3>
-                            <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors relative z-10">
+                            <button
+                                onClick={() => setShowApplyModal(true)}
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors relative z-10"
+                            >
                                 Apply now
                                 <ChevronRight className="w-4 h-4 ml-2" />
                             </button>
@@ -674,6 +679,9 @@ export default function ProjectPage() {
             </footer>
 
             {/* Modals */}
+            {showApplyModal && (
+                <ApplicationModal onClose={() => setShowApplyModal(false)} />
+            )}
             {
                 showMintModal && (
                     <MintingModal
