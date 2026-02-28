@@ -5,7 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { MintingModal } from '@/components/MintingModal';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck } from 'lucide-react';
+import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame } from 'lucide-react';
 import {
     AreaChart,
     Area,
@@ -40,6 +40,7 @@ const REFERENCE_VALUE = 254;
 
 export default function ProjectPage() {
     const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
+    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
     const [showMintModal, setShowMintModal] = useState(false);
@@ -54,6 +55,13 @@ export default function ProjectPage() {
         { rank: 'QJ1f9...B4Hj', user: 'vk', badge: '', amount: '$995', percentage: '0.3%' },
         { rank: 'T8P4v...QGxs', user: 'sk', badge: '', amount: '$766', percentage: '0.2%' },
         { rank: 'B4PsH...Kjh9', user: 'gs', badge: '', amount: '$434', percentage: '0.1%' },
+    ];
+
+    const chatActivities = [
+        { id: 1, text: "EFNzqS...5fyN deposited $672.63 at Tier 0 (Instant)" },
+        { id: 2, text: "EFNzqS...5fyN deposited $673.67 at Tier 0 (Instant)" },
+        { id: 3, text: "BG4V9X...wFiE deposited $11.12 at Tier 0 (Instant)" },
+        { id: 4, text: "3HtRLA...qtiN deposited $9.91 at Tier 0 (Instant)" },
     ];
 
     return (
@@ -383,43 +391,88 @@ export default function ProjectPage() {
                     <div className="bg-white rounded-3xl shadow-sm border border-slate-100 flex flex-col p-4 max-h-[calc(100vh-6rem)] lg:flex lg:flex-col lg:min-h-0">
                         {/* Tabs Toggle */}
                         <div className="bg-slate-50 rounded-2xl p-1.5 flex shadow-inner mb-6">
-                            <button className="flex-1 bg-white text-slate-900 font-bold rounded-xl py-2.5 text-sm shadow-sm flex items-center justify-center gap-2">
-                                <span className="w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm" />
-                                Depositors
+                            <button
+                                onClick={() => setSidebarTab('depositors')}
+                                className={`flex-1 font-bold rounded-xl py-2.5 text-sm flex items-center justify-center gap-2 transition-colors ${sidebarTab === 'depositors' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
+                                Depositors <span className="text-[10px] font-black">{depositors.length}</span>
                             </button>
-                            <button className="flex-1 text-slate-500 hover:text-slate-800 font-bold rounded-xl py-2 text-sm transition-colors">
+                            <button
+                                onClick={() => setSidebarTab('chat')}
+                                className={`flex-1 font-bold rounded-xl py-2.5 text-sm transition-colors ${sidebarTab === 'chat' ? 'bg-[#e5e5e5] text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
                                 Chat
                             </button>
-                            <button className="flex-1 text-slate-500 hover:text-slate-800 font-bold rounded-xl py-2 text-sm transition-colors">
+                            <button
+                                onClick={() => setSidebarTab('details')}
+                                className={`flex-1 font-bold rounded-xl py-2.5 text-sm transition-colors ${sidebarTab === 'details' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}>
                                 Details
                             </button>
                         </div>
 
-                        {/* Section Header */}
-                        <div className="px-2 mb-4">
-                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex flex-wrap gap-2">
-                                TOP 20 <span className="text-blue-500 opacity-50">·</span> <span className="text-slate-800">AVATAR (IMO)</span>
-                            </h3>
-                        </div>
-
-                        {/* Depositors List */}
-                        <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto">
-                            {depositors.map((dep, i) => (
-                                <div key={i} className="flex items-center justify-between text-sm py-2 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
-                                        <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
-                                            {dep.user}
-                                            {dep.badge && <span>{dep.badge}</span>}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-4 text-right">
-                                        <span className="font-bold text-slate-900 w-12">{dep.amount}</span>
-                                        <span className="font-bold text-slate-400 w-10 text-[11px]">{dep.percentage}</span>
-                                    </div>
+                        {sidebarTab === 'depositors' && (
+                            <>
+                                {/* Section Header */}
+                                <div className="px-2 mb-4">
+                                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest flex flex-wrap gap-2">
+                                        TOP 20 <span className="text-blue-500 opacity-50">·</span> <span className="text-slate-800">AVATAR (IMO)</span>
+                                    </h3>
                                 </div>
-                            ))}
-                        </div>
+
+                                {/* Depositors List */}
+                                <div className="flex flex-col px-2 flex-1 gap-1 min-h-0 overflow-y-auto">
+                                    {depositors.map((dep, i) => (
+                                        <div key={i} className="flex items-center justify-between text-sm py-2 hover:bg-slate-50 rounded-lg px-2 -mx-2 transition-colors cursor-pointer">
+                                            <div className="flex items-center gap-3">
+                                                <span className="font-semibold text-slate-500 min-w-[100px]">{dep.rank}</span>
+                                                <span className="font-bold text-slate-700 min-w-[30px] flex items-center gap-1">
+                                                    {dep.user}
+                                                    {dep.badge && <span>{dep.badge}</span>}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-4 text-right">
+                                                <span className="font-bold text-slate-900 w-12">{dep.amount}</span>
+                                                <span className="font-bold text-slate-400 w-10 text-[11px]">{dep.percentage}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        {sidebarTab === 'chat' && (
+                            <div className="flex flex-col flex-1 min-h-0">
+                                <div className="px-2 mb-4">
+                                    <span className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] text-[10px] tracking-wider font-extrabold px-3 py-1 rounded-full">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#16a34a]"></span>
+                                        2 ONLINE
+                                    </span>
+                                </div>
+
+                                <div className="flex flex-col flex-1 gap-3 min-h-0 overflow-y-auto mb-4">
+                                    {chatActivities.map((activity) => (
+                                        <div key={activity.id} className="bg-[#eefcf4] p-3 rounded-2xl flex items-center gap-3 w-full border border-white/40 shadow-sm">
+                                            <div className="w-8 h-8 rounded-xl bg-[#c1f0d4] flex items-center justify-center shrink-0">
+                                                <Flame className="w-4 h-4 text-[#16a34a] fill-[#16a34a]" />
+                                            </div>
+                                            <p className="text-[#16a34a] text-sm font-semibold tracking-tight leading-tight">
+                                                {activity.text}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex items-center gap-2 mt-auto">
+                                    <input
+                                        type="text"
+                                        disabled={!isConnected}
+                                        placeholder={isConnected ? "Type a message..." : "Log in to chat"}
+                                        className="flex-1 bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-slate-300 shadow-sm text-slate-900 placeholder:text-slate-400 font-medium"
+                                    />
+                                    <button className="w-12 h-12 rounded-xl bg-[#ffa88f] flex items-center justify-center text-white shrink-0 hover:bg-[#ff967a] transition-colors shadow-sm">
+                                        <Send size={18} className="rotate-45 -translate-x-0.5 translate-y-0.5" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Action Buttons */}
                         <div className="mt-8 flex flex-col gap-3">
