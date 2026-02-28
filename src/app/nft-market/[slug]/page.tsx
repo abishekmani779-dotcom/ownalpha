@@ -630,7 +630,8 @@ export default function ProjectPage() {
             ].map((nft) => (
               <div
                 key={nft.id}
-                className="flex flex-col bg-white rounded-[14px] overflow-hidden border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+                onClick={() => setShowMintModal(true)}
+                className="flex flex-col bg-white rounded-[14px] overflow-hidden border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)] cursor-pointer hover:shadow-md transition-shadow"
               >
                 <div className="bg-gradient-to-b from-slate-700 to-black p-2 h-[180px] flex items-center justify-center">
                   <img
