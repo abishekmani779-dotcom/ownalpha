@@ -4,7 +4,7 @@ import { useReadContract } from "wagmi";
 import factoryJson from "@/abi/MovieFactory.json";
 
 const FACTORY_ADDRESS =
-  "0x5FbDB2315678afecb367f032d93F642f64180aa3" as `0x${string}`;
+  "0x0B590C15064DfDB862B1b0062F6A303Eb2BE6D7a" as `0x${string}`;
 
 export default function InvestPage() {
   const { data: movies } = useReadContract({

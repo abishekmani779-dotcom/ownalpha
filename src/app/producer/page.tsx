@@ -6,7 +6,7 @@ import { parseEther } from "viem";
 import { Navbar } from "@/components/Navbar";
 
 const FACTORY_ADDRESS =
-  "0x5FbDB2315678afecb367f032d93F642f64180aa3" as `0x${string}`;
+  "0x0B590C15064DfDB862B1b0062F6A303Eb2BE6D7a" as `0x${string}`;
 
 const factoryAbi = [
   {
