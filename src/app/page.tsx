@@ -1,6 +1,7 @@
 'use client';
 
 import { Navbar } from '@/components/Navbar';
+import { SearchFilter } from '@/components/SearchFilter';
 import { MovieRow } from '@/components/MovieRow';
 import { SidebarStats } from '@/components/SidebarStats';
 import { HeroProject } from '@/components/HeroProject';
@@ -16,6 +17,9 @@ export default function Home() {
       </div>
 
       <div className="flex-1 w-full flex flex-col gap-6">
+        {/* Search and Filter */}
+        <SearchFilter />
+
         {/* Top Carousel Row */}
         <MovieRow />
 
