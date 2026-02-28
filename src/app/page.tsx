@@ -26,16 +26,21 @@ export default function Home() {
           <MovieRow />
         </div>
 
-        {/* Main Split Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 flex-1 min-h-0">
-          {/* Left Column (Stats + Assets) */}
-          <div className="col-span-1 md:col-span-4 h-full">
-            <SidebarStats />
-          </div>
+        {/* Contribute Movie Section */}
+        <div className="flex flex-col gap-3 flex-1 min-h-0">
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight ml-1">Contribute movie</h2>
 
-          {/* Right Column (Hero Project) */}
-          <div className="col-span-1 md:col-span-8 h-full">
-            <HeroProject />
+          {/* Main Split Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-full">
+            {/* Left Column (Stats + Assets) */}
+            <div className="col-span-1 md:col-span-4 h-full">
+              <SidebarStats />
+            </div>
+
+            {/* Right Column (Hero Project) */}
+            <div className="col-span-1 md:col-span-8 h-full">
+              <HeroProject />
+            </div>
           </div>
         </div>
 

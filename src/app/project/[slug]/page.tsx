@@ -40,10 +40,10 @@ const GRAPH_DATA = [
 const REFERENCE_VALUE = 254;
 
 export default function ProjectPage() {
-    const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
+    const [viewMode, setViewMode] = useState<'film' | 'graph'>('graph');
     const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
     const [tradeAmount, setTradeAmount] = useState('');
-    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
+    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('depositors');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
     const [showMintModal, setShowMintModal] = useState(false);
