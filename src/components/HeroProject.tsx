@@ -87,20 +87,27 @@ export function HeroProject() {
                     </div>
                 </div>
 
-                {/* Progress Bar */}
-                <div className="h-2 w-full bg-white/20 rounded-full mt-4 overflow-hidden backdrop-blur-sm">
-                    <div className="h-full bg-white rounded-full w-[2%]" />
-                </div>
-            </div>
+                {/* Progress Bar and Navigation Arrows */}
+                <div className="flex items-center gap-6 mt-4">
+                    {/* Progress Bar with Knob */}
+                    <div className="flex-1 relative">
+                        <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden backdrop-blur-sm">
+                            <div className="h-full bg-white rounded-full w-[2%]" />
+                        </div>
+                        {/* Knob */}
+                        <div className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-white rounded-full shadow-md" style={{ left: 'calc(2% - 7px)' }} />
+                    </div>
 
-            {/* Navigation Arrows */}
-            <div className="absolute bottom-8 right-8 flex gap-2">
-                <button className="w-10 h-10 bg-white/90 hover:bg-white text-black rounded flex items-center justify-center transition-colors">
-                    <ChevronLeft size={20} />
-                </button>
-                <button className="w-10 h-10 bg-white/90 hover:bg-white text-black rounded flex items-center justify-center transition-colors">
-                    <ChevronRight size={20} />
-                </button>
+                    {/* Navigation Arrows */}
+                    <div className="flex gap-2 shrink-0">
+                        <button className="w-10 h-10 bg-white/95 hover:bg-white text-black rounded flex items-center justify-center transition-colors shadow-sm">
+                            <ChevronLeft size={20} />
+                        </button>
+                        <button className="w-10 h-10 bg-white/95 hover:bg-white text-black rounded flex items-center justify-center transition-colors shadow-sm">
+                            <ChevronRight size={20} />
+                        </button>
+                    </div>
+                </div>
             </div>
         </Link>
     );

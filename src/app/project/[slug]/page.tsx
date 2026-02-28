@@ -42,7 +42,7 @@ const REFERENCE_VALUE = 254;
 export default function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
 
-    const [viewMode, setViewMode] = useState<'film' | 'graph'>('film');
+    const [viewMode, setViewMode] = useState<'film' | 'graph'>('graph');
     const [movieData, setMovieData] = useState<any>(null);
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
     }, [slug]);
     const [tradeMode, setTradeMode] = useState<'buy' | 'sell'>('buy');
     const [tradeAmount, setTradeAmount] = useState('');
-    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('chat');
+    const [sidebarTab, setSidebarTab] = useState<'depositors' | 'chat' | 'details'>('depositors');
     const { isConnected } = useAccount();
     const { openConnectModal } = useConnectModal();
     const [showMintModal, setShowMintModal] = useState(false);

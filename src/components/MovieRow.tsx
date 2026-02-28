@@ -1,6 +1,6 @@
 'use client';
 
-import { Play } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
@@ -75,7 +75,7 @@ export function MovieRow() {
     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
       {movieList.map((m, i) => (
         <Link
-          href={`/project/${m.slug || 'avatar'}`}
+          href={`/nft-market/${m.slug || 'avatar'}`}
           key={m._id || i}
           className="block min-w-70 h-40 relative rounded-2xl overflow-hidden shadow-sm group snap-center shrink-0 cursor-pointer"
         >
@@ -92,8 +92,8 @@ export function MovieRow() {
             <p className="text-xl font-semibold leading-none">{m.funds}</p>
           </div>
 
-          <button className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1 transition-colors">
-            Buy NFT <Play className="w-3 h-3 fill-current" />
+          <button className="absolute bottom-4 right-4 bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/20 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-colors font-medium tracking-wide">
+            Buy NFT <ShoppingCart className="w-3.5 h-3.5" />
           </button>
         </Link>
       ))}
