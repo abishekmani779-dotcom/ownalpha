@@ -7,34 +7,24 @@ import ApplicationModal from '@/components/ApplicationModal';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star, ArrowUpRight } from 'lucide-react';
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-    ReferenceLine,
-} from 'recharts';
+import { CandlestickChart } from '@/components/CandlestickChart';
 
-const GRAPH_DATA = [
-    { time: '09:00', value: 248.2 },
-    { time: '09:02', value: 249.1 },
-    { time: '09:04', value: 251.0 },
-    { time: '09:06', value: 252.4 },
-    { time: '09:08', value: 250.8 },
-    { time: '09:10', value: 253.2 },
-    { time: '09:12', value: 255.1 },
-    { time: '09:14', value: 254.3 },
-    { time: '09:15', value: 254.8 },
-    { time: '09:18', value: 256.2 },
-    { time: '09:20', value: 257.0 },
-    { time: '09:22', value: 255.5 },
-    { time: '09:24', value: 258.1 },
-    { time: '09:26', value: 259.0 },
-    { time: '09:28', value: 257.8 },
-    { time: '09:30', value: 259.5 },
+const CANDLESTICK_DATA = [
+    { time: '2023-01-01', open: 248.2, high: 249.5, low: 247.1, close: 249.1 },
+    { time: '2023-01-02', open: 249.1, high: 251.5, low: 248.5, close: 251.0 },
+    { time: '2023-01-03', open: 251.0, high: 253.0, low: 250.0, close: 252.4 },
+    { time: '2023-01-04', open: 252.4, high: 253.5, low: 249.8, close: 250.8 },
+    { time: '2023-01-05', open: 250.8, high: 254.0, low: 250.0, close: 253.2 },
+    { time: '2023-01-06', open: 253.2, high: 256.0, low: 252.0, close: 255.1 },
+    { time: '2023-01-07', open: 255.1, high: 256.5, low: 253.5, close: 254.3 },
+    { time: '2023-01-08', open: 254.3, high: 255.5, low: 253.0, close: 254.8 },
+    { time: '2023-01-09', open: 254.8, high: 257.0, low: 254.0, close: 256.2 },
+    { time: '2023-01-10', open: 256.2, high: 258.0, low: 255.5, close: 257.0 },
+    { time: '2023-01-11', open: 257.0, high: 258.5, low: 255.0, close: 255.5 },
+    { time: '2023-01-12', open: 255.5, high: 259.0, low: 255.0, close: 258.1 },
+    { time: '2023-01-13', open: 258.1, high: 260.0, low: 257.5, close: 259.0 },
+    { time: '2023-01-14', open: 259.0, high: 260.5, low: 257.0, close: 257.8 },
+    { time: '2023-01-15', open: 257.8, high: 261.0, low: 257.5, close: 259.5 },
 ];
 
 const REFERENCE_VALUE = 254;
@@ -165,72 +155,8 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                                             +18.4% today
                                         </span>
                                     </div>
-                                    <div className="flex-1 min-h-0 w-full">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <AreaChart
-                                                data={GRAPH_DATA}
-                                                margin={{ top: 12, right: 28, left: 8, bottom: 4 }}
-                                            >
-                                                <defs>
-                                                    <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="0%" stopColor="rgba(34, 197, 94, 0.25)" />
-                                                        <stop offset="100%" stopColor="rgba(34, 197, 94, 0.02)" />
-                                                    </linearGradient>
-                                                </defs>
-                                                <CartesianGrid strokeDasharray="0" stroke="#e2e8f0" vertical={false} />
-                                                <XAxis
-                                                    dataKey="time"
-                                                    axisLine={false}
-                                                    tickLine={false}
-                                                    tick={{ fontSize: 10, fill: '#64748b' }}
-                                                    dy={6}
-                                                    interval="preserveStartEnd"
-                                                />
-                                                <YAxis
-                                                    orientation="right"
-                                                    domain={['dataMin - 2', 'dataMax + 2']}
-                                                    axisLine={false}
-                                                    tickLine={false}
-                                                    tick={{ fontSize: 11, fill: '#475569' }}
-                                                    dx={8}
-                                                    tickFormatter={(v) => v.toFixed(1)}
-                                                />
-                                                <ReferenceLine
-                                                    y={REFERENCE_VALUE}
-                                                    stroke="#86efac"
-                                                    strokeDasharray="4 4"
-                                                    strokeWidth={1.5}
-                                                />
-                                                <Tooltip
-                                                    cursor={{ stroke: '#22c55e', strokeWidth: 1.5, strokeDasharray: '0' }}
-                                                    content={({ active, payload, label }) => {
-                                                        if (!active || !payload?.length) return null;
-                                                        return (
-                                                            <div className="bg-white/95 backdrop-blur rounded-lg shadow-lg border border-slate-200 px-3 py-2 text-center">
-                                                                <p className="text-[10px] font-semibold text-slate-500 uppercase">{label}</p>
-                                                                <p className="text-sm font-bold text-slate-900">{payload[0].value?.toFixed(1)}</p>
-                                                            </div>
-                                                        );
-                                                    }}
-                                                    position={{ y: 0 }}
-                                                />
-                                                <Area
-                                                    type="monotone"
-                                                    dataKey="value"
-                                                    stroke="#2563eb"
-                                                    strokeWidth={2}
-                                                    fill="url(#areaFill)"
-                                                    dot={false}
-                                                    activeDot={{
-                                                        r: 5,
-                                                        fill: '#22c55e',
-                                                        stroke: '#fff',
-                                                        strokeWidth: 2,
-                                                    }}
-                                                    isAnimationActive={false}
-                                                />
-                                            </AreaChart>
-                                        </ResponsiveContainer>
+                                    <div className="flex-1 min-h-0 w-full rounded-xl overflow-hidden">
+                                        <CandlestickChart data={CANDLESTICK_DATA as any} />
                                     </div>
                                 </div>
                             )}
