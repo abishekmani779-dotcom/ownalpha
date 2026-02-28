@@ -6,7 +6,7 @@ import { MintingModal } from '@/components/MintingModal';
 import ApplicationModal from '@/components/ApplicationModal';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star } from 'lucide-react';
+import { Play, CheckCircle2, ChevronRight, X, Send, Globe, Film, BadgeCheck, Flame, CornerUpLeft, SmilePlus, Star, ArrowUpRight } from 'lucide-react';
 import {
     AreaChart,
     Area,
@@ -389,15 +389,16 @@ export default function ProjectPage() {
 
                     {/* Bottom Call to Action area, 2 cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-slate-500 text-white rounded-3xl p-8 flex flex-col justify-between items-start h-48 relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-slate-600 opacity-0 group-hover:opacity-10 transition-opacity" />
-                            <h3 className="text-3xl font-bold max-w-[200px] leading-tight relative relative z-10">Ready to be the next Project?</h3>
+                        <div className="bg-[#808080] text-white rounded-[20px] p-7 flex flex-col justify-between items-start h-[200px] relative overflow-hidden shadow-sm">
+                            <h3 className="text-[26px] font-medium leading-snug relative z-10 tracking-tight">
+                                Ready to be the<br />next Project?
+                            </h3>
                             <button
                                 onClick={() => setShowApplyModal(true)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors relative z-10"
+                                className="bg-[#1b65f6] hover:bg-[#1655cc] text-white font-medium py-3 px-5 rounded-[12px] flex items-center gap-2 transition-colors relative z-10 text-[14px]"
                             >
                                 Apply now
-                                <ChevronRight className="w-4 h-4 ml-2" />
+                                <ArrowUpRight className="w-5 h-5 ml-0.5" strokeWidth={2.5} />
                             </button>
                         </div>
 
