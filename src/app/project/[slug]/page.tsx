@@ -70,7 +70,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                                 <>
                                     <div
                                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
-                                        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop')` }}
+                                        style={{ backgroundImage: `url("https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQJfdu01GP05dCCbubLMIXZgxz4SqKIpQx92wu9zHT7pXovv-Sn")` }}
                                     />
                                     <div className="absolute inset-0 bg-black/20" />
                                 </>

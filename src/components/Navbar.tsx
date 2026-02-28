@@ -34,9 +34,23 @@ export function Navbar() {
                     </button>
                 </div>
 
-                <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-[6px] rounded-full transition-colors leading-relaxed">
+                {/* <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-6 py-[6px] rounded-full transition-colors leading-relaxed">
                     Apply
-                </button>
+                </button> */}
+
+                <div className="flex items-center gap-2 pr-2">
+                    <Link href="/producer">
+                        <button className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
+                            Film Producer
+                        </button>
+                    </Link>
+
+                    <Link href="/investor">
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">
+                        Invest in a Film
+                    </button>
+                    </Link>
+                </div>
             </div>
 
             {/* Right icons */}
@@ -82,7 +96,7 @@ export function Navbar() {
                                                 type="button"
                                                 className="bg-slate-200/50 hover:bg-slate-200 text-slate-900 text-sm font-semibold px-4 py-2 rounded-xl transition-colors tracking-tight flex items-center gap-2"
                                             >
-                                                Log In
+                                                Connect Wallet
                                             </button>
                                         );
                                     }
