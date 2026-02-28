@@ -75,7 +75,7 @@ export function MovieRow() {
     <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
       {movieList.map((m, i) => (
         <Link
-          href={`/project/${m.slug || 'avatar'}`}
+          href={`/nft-market/${m.slug || 'avatar'}`}
           key={m._id || i}
           className="block min-w-70 h-40 relative rounded-2xl overflow-hidden shadow-sm group snap-center shrink-0 cursor-pointer"
         >
