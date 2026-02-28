@@ -1,7 +1,38 @@
+'use client';
+
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export function HeroProject() {
+    const [timeLeft, setTimeLeft] = useState('');
+
+    useEffect(() => {
+        // End date is 5 days, 12 hours from mount
+        const endDate = new Date();
+        endDate.setDate(endDate.getDate() + 5);
+        endDate.setHours(endDate.getHours() + 12);
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = endDate.getTime() - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                setTimeLeft('Ended');
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                setTimeLeft(`${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`);
+            }
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
     return (
         <Link href="/project/avatar" className="block relative rounded-2xl overflow-hidden shadow-sm h-full min-h-[400px] flex flex-col justify-end group cursor-pointer transition-transform hover:scale-[1.01]">
             {/* Background Image */}
@@ -47,9 +78,11 @@ export function HeroProject() {
                             <span className="text-xl font-bold text-white leading-none">35</span>
                         </div>
 
-                        <div>
+                        <div className="flex flex-col">
                             <p className="text-[10px] font-bold text-white/60 mb-1 uppercase tracking-wider">Ends In</p>
-                            <span className="bg-[#10b981] text-white text-[12px] font-bold px-2 py-0.5 rounded-sm">Ended</span>
+                            <span className="bg-[#10b981] text-white text-[12px] font-bold px-2 py-0.5 rounded-sm tabular-nums whitespace-nowrap min-w-[100px] text-center">
+                                {timeLeft || '5d 12h 00m 00s'}
+                            </span>
                         </div>
                     </div>
                 </div>
